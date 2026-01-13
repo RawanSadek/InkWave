@@ -1,9 +1,9 @@
 
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
 import MasterLayout from './Modules/Shared/MasterLayout/MasterLayout'
 import NotFound from './Modules/Shared/Notfound/Notfound'
-import  LandingPage from './Modules/Shared/LandingPage/LandingPage'
+import LandingPage from './Modules/Shared/LandingPage/LandingPage'
 import ProductsList from './Modules/AdminModule/ProductsList/ProductsList'
 import Products from './Modules/UserModule/Products/Products'
 import ProductDetails from './Modules/UserModule/ProductDetails/ProductDetails'
@@ -18,54 +18,60 @@ import ChangePassword from './Modules/AuthModule/ChangePassword/ChangePassword'
 import UsersList from './Modules/AdminModule/UsersList/UsersList'
 import OrdersList from './Modules/AdminModule/OrdersList/OrdersList'
 import CategoriesList from './Modules/AdminModule/CategoriesList/CategoriesList'
+import { ToastContainer } from 'react-toastify'
+import AdminLayout from './Modules/Shared/AdminLayout/AdminLayout'
+import ProductData from './Modules/AdminModule/ProductData/ProductData'
+import AdminDashboard from './Modules/AdminModule/AdminDashboard/AdminDashboard'
 
 function App() {
 
-  const router = createBrowserRouter([
-    { 
-      path: '', 
-      element: <MasterLayout/>, 
-      errorElement: <NotFound/>,
-      children: [
-        {index: true, element: <LandingPage/>} ,
-        {path: '/home', element: <LandingPage/>},
-        {path: '/products', element: <Products/>},
-        {path: '/product-details', element: <ProductDetails/>},
-        {path: '/cart', element: <Cart/>},
-        {path: '/favorites', element: <Favorites/>},
-      ]
-    },
-    
+  const routes = createBrowserRouter([
     {
-      path: "",
-      element: <AuthLayout/>,
-      errorElement: <NotFound/>,
+      path: '',
+      element: <MasterLayout />,
+      errorElement: <NotFound />,
       children: [
-        {path: '/login', element: <Login/>} ,
-        {path: '/register', element: <Register/>},
-        {path: '/forgot-password', element: <ForgotPassword/>},
-        {path: '/reset-password', element: <ResetPassword/>},
-        {path: '/change-password', element: <ChangePassword/>},
+        { index: true, element: <LandingPage /> },
+        { path: 'home', element: <LandingPage /> },
+        { path: 'products', element: <Products /> },
+        { path: 'product-details', element: <ProductDetails /> },
+        { path: 'cart', element: <Cart /> },
+        { path: 'favorites', element: <Favorites /> },
       ]
     },
 
     {
-      path: '/dashboard',
-      element: <MasterLayout/>,
-      errorElement: <NotFound/>,
+      path: "",
+      element: <AuthLayout />,
+      errorElement: <NotFound />,
       children: [
-        {path: 'products-list', element: <ProductsList/>},
-        {path: 'product-data', element: <ProductDetails/>},
-        {path: 'users-list', element: <UsersList/>},
-        {path: 'orders-list', element: <OrdersList/>},
-        {path: 'categories-list', element: <CategoriesList/>},
+        { path: "login", element: <Login /> },
+        { path: 'register', element: <Register /> },
+        { path: 'forgot-password', element: <ForgotPassword /> },
+        { path: 'reset-password', element: <ResetPassword /> },
+        { path: 'change-password', element: <ChangePassword /> },
+      ]
+    },
+
+    {
+      path: 'dashboard',
+      element: <AdminLayout />,
+      errorElement: <NotFound />,
+      children: [
+        { index: true, element: <AdminDashboard /> },
+        { path: 'products-list', element: <ProductsList /> },
+        { path: 'product-data', element: <ProductData /> },
+        { path: 'users-list', element: <UsersList /> },
+        { path: 'orders-list', element: <OrdersList /> },
+        { path: 'categories-list', element: <CategoriesList /> },
       ]
     }
-    ])
+  ])
 
   return (
     <>
-
+      <ToastContainer />
+      <RouterProvider router={routes} />
     </>
   )
 }

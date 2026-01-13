@@ -1,0 +1,16 @@
+:root {
+  --primary-color: #bf8b14;
+  --secondary-color: #8c8c8c;
+}
+
+.main-gold-text {
+  color: var(--primary-color);
+}
+
+.main-gold-bg {
+  background-color: var(--primary-color);
+}
+
+.secondary-text {
+  color: var(--secondary-color);
+}

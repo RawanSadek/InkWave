@@ -1,6 +1,13 @@
-import React from 'react'
 
-export default function AdminSidebar() {
+export default function AdminSidebar({
+  collapsed,
+  setCollapsed,
+}: {
+  collapsed: boolean;
+  setCollapsed: (value: boolean) => void;
+})
+
+{
   return (
     <div>
       AdminSidebar
