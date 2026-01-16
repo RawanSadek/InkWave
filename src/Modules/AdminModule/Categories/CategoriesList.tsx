@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import type { categoriesFormData } from "../../../Services/INTERFACES";
 import { REQUIRED_FIELD, URL_VALIDATION } from "../../../Services/VALIDATIONS";
-import noImg from "../../../Assets/Images/noImage.png";
+import noImg from "../../../assets/Images/noImage.png";
 import loadingImg from "../../../Assets/Images/loading4.gif";
 import { FaRegEye } from "react-icons/fa";
 
