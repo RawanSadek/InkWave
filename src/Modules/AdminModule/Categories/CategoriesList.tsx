@@ -29,7 +29,7 @@ export default function CategoriesList() {
   const getAllCategories = async () => {
     setLoading(true);
     try {
-      const response = await axiosInstances.get(CATEGORIES_URLs.GET_ALL);
+      const response = await axiosInstances.get(`${import.meta.env.VITE_API_BASE_URL}/api/categories`);
       setCategories(response.data);
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
