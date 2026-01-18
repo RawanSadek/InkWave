@@ -167,7 +167,7 @@ export default function CategoriesList() {
                       setFormMode("view");
                       setFormOpen(true);
                     }}
-                    className="text-white rounded-lg hover:bg-[#adadad24] text-[20px] md:text-[28px]"
+                    className="secondary-text rounded-lg hover:bg-[#8d8d8d30] text-[28px] md:text-[28px]"
                   />
                   <MdOutlineEdit
                     onClick={() => {
@@ -175,10 +175,10 @@ export default function CategoriesList() {
                       setFormMode("edit");
                       setFormOpen(true);
                     }}
-                    className="main-gold-text rounded-lg hover:bg-[#bc9c0024] text-[20px] md:text-[30px]"
+                    className="main-gold-text rounded-lg hover:bg-[#bc9c0024] text-[30px] md:text-[30px]"
                     // size={30}
                   />
-                  <BiTrash className="text-red-600 rounded-lg hover:bg-[#a1000024] !p-2 text-[35px] md:text-[35px]" />
+                  <BiTrash className="text-red-600 rounded-lg hover:bg-[#a1000024] text-[28px] md:text-[30px]" />
                 </div>
               </div>
             </div>
@@ -255,11 +255,12 @@ export default function CategoriesList() {
                   )}
                 </div>
 
-                <div className="flex gap-3 my-5 *:py-2 cursor-pointer">
+                <div className="flex justify-end gap-3 my-5 *:py-2">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="capitalize main-gold-bg rounded-lg w-[75%] hover:opacity-85 disabled:opacity-50 disabled:cursor-progress"
+                    hidden={formMode === "view"}
+                    className={`capitalize main-gold-bg rounded-lg w-[75%] ${formMode!=='view' && 'hover:opacity-85 cursor-pointer'} disabled:opacity-50 disabled:cursor-progress`}
                   >
                     save
                   </button>
@@ -269,9 +270,9 @@ export default function CategoriesList() {
                       reset();
                     }}
                     disabled={isSubmitting}
-                    className="capitalize main-gold-text ring-[0.2px] rounded-lg w-[25%] hover:bg-[#2c2c2c] disabled:opacity-50 disabled:cursor-progress"
+                    className="capitalize main-gold-text ring-[0.2px] rounded-lg w-[25%] hover:bg-[#2c2c2c] cursor-pointer disabled:opacity-50 disabled:cursor-progress"
                   >
-                    cancel
+                     {formMode === "view" ? 'oK' : 'cancel'}
                   </button>
                 </div>
               </form>

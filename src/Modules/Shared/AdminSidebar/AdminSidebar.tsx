@@ -122,7 +122,7 @@ export default function AdminSidebar({
             >
             <MenuItem
               icon={<MdLogout size={20} />}
-              component={<Link to="/loginL" />}
+              component={<Link to="/login" />}
               className={`rounded-lg px-3 mb-3 
                 hover:bg-[#2a2a2a] hover:text-[#cea028]
               `}
