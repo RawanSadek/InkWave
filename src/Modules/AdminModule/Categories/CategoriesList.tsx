@@ -10,14 +10,16 @@ import { REQUIRED_FIELD, URL_VALIDATION } from "../../../Services/VALIDATIONS";
 import noImg from "../../../assets/Images/noImage.png";
 import loadingImg from "../../../assets/Images/loading4.gif";
 import { FaRegEye } from "react-icons/fa";
+import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation";
 
 export default function CategoriesList() {
   const [categories, setCategories] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
   const [formMode, setFormMode] = useState<"add" | "edit" | "view">();
+  const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] =
     useState<categoriesFormData | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const {
     register,
@@ -55,7 +57,7 @@ export default function CategoriesList() {
       try {
         const response = await axiosInstances.post(
           CATEGORIES_URLs.CREATE,
-          data
+          data,
         );
         toast.success("Category created successfully"); //to be replced by the backend one
         setCategories(response.data);
@@ -70,7 +72,7 @@ export default function CategoriesList() {
       try {
         const response = await axiosInstances.put(
           CATEGORIES_URLs.UPDATE(selectedCategory.id),
-          data
+          data,
         );
         toast.success("Category updated successfully"); //to be replced by the backend one
         setCategories(response.data);
@@ -82,6 +84,20 @@ export default function CategoriesList() {
         toast.error(error.response?.data?.message || "Something went wrong");
       }
     }
+  };
+
+  const deleteCategory = async (id: string) => {
+    setLoading(true);
+    try {
+      const response = await axiosInstances.delete(CATEGORIES_URLs.DELETE(id));
+      toast.success(response?.data?.message || "Category deleted successfully");
+      setCategories(response.data);
+      setIsOpen(false);
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      toast.error(error?.response?.data?.message || "Something went wrong!");
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -178,7 +194,13 @@ export default function CategoriesList() {
                     className="main-gold-text rounded-lg hover:bg-[#bc9c0024] text-[30px] md:text-[30px]"
                     // size={30}
                   />
-                  <BiTrash className="text-red-600 rounded-lg hover:bg-[#a1000024] text-[28px] md:text-[30px]" />
+                  <BiTrash
+                    onClick={() => {
+                      setIsOpen(true);
+                      getCategoryById(category?.id);
+                    }}
+                    className="text-red-600 rounded-lg hover:bg-[#a1000024] text-[28px] md:text-[30px]"
+                  />
                 </div>
               </div>
             </div>
@@ -193,13 +215,13 @@ export default function CategoriesList() {
           className="flex justify-center items-center bg-[#0000005f] backdrop-blur-xs overflow-y-auto overflow-x-hidden fixed z-50 w-full inset-0 max-h-full"
         >
           <div className="relative p-7 sm:w-[75%] md:w-[60%] lg:w-[35%] max-w-2xl max-h-full ring-[0.3px] ring-[#bf8b14] rounded-lg secondary-bg">
-            {/*  Modal header */}
+            {/*  Popup header */}
             <div className="">
               <h2 className="text-2xl font-medium main-gold-text">
                 Create Category
               </h2>
             </div>
-            {/* <!-- Modal body --> */}
+            {/* <!-- Popup body --> */}
             {loading && (
               <div className="flex justify-center items-center my-10">
                 <img src={loadingImg} alt="loading" className="w-[20%]" />
@@ -220,7 +242,7 @@ export default function CategoriesList() {
                     Category Name
                   </label>
                   <input
-                  disabled={formMode === "view"}
+                    disabled={formMode === "view"}
                     type="text"
                     id="category-name"
                     className="mt-2 main-gold-text text-sm rounded-lg ring-[0.3px] ring-[#bf8b14] focus:ring-1 outline-0 w-full p-3 disabled:opacity-70"
@@ -242,7 +264,7 @@ export default function CategoriesList() {
                     Image URL
                   </label>
                   <input
-                  disabled={formMode === "view"}
+                    disabled={formMode === "view"}
                     type="text"
                     id="category-img"
                     className="mt-2 main-gold-text text-sm rounded-lg ring-[0.3px] ring-[#bf8b14] focus:ring-1 outline-0 w-full p-3 disabled:opacity-70"
@@ -260,7 +282,7 @@ export default function CategoriesList() {
                     type="submit"
                     disabled={isSubmitting}
                     hidden={formMode === "view"}
-                    className={`capitalize main-gold-bg rounded-lg w-[75%] ${formMode!=='view' && 'hover:opacity-85 cursor-pointer'} disabled:opacity-50 disabled:cursor-progress`}
+                    className={`capitalize main-gold-bg rounded-lg w-[75%] ${formMode !== "view" && "hover:opacity-85 cursor-pointer"} disabled:opacity-50 disabled:cursor-progress`}
                   >
                     save
                   </button>
@@ -272,13 +294,30 @@ export default function CategoriesList() {
                     disabled={isSubmitting}
                     className="capitalize main-gold-text ring-[0.2px] rounded-lg w-[25%] hover:bg-[#2c2c2c] cursor-pointer disabled:opacity-50 disabled:cursor-progress"
                   >
-                     {formMode === "view" ? 'oK' : 'cancel'}
+                    {formMode === "view" ? "oK" : "cancel"}
                   </button>
                 </div>
               </form>
             )}
           </div>
         </div>
+      )}
+
+      {/* Delete Confirmation Popup */}
+      {isOpen && (
+        <DeleteConfirmation
+          isOpen={isOpen}
+          itemName={selectedCategory?.name?? null}
+          entityName="category"
+          isLoading = {loading}
+          onClose={() => {
+            setIsOpen(false);
+            setSelectedCategory(null);
+          }}
+          onDelete={() => {
+            deleteCategory(selectedCategory!.id);
+          }}
+        />
       )}
     </>
   );

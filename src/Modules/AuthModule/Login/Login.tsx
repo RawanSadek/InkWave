@@ -16,9 +16,9 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: loginFormData) => {
     try {
-      // const response  = axiosInstances.post(AUTH_URLs.LOGIN, data);
+      const response  = await axiosInstances.post(AUTH_URLs.LOGIN, data);
       toast.success("Welcome to Ink Wave!");
       navigate('/home');
     } catch (err) {
@@ -40,6 +40,7 @@ export default function Login() {
             {...register("email", REQUIRED_FIELD('Email'))}
             type="text"
             id="email"
+            disabled={isSubmitting}
             className="main-gold-text text-sm outline-0 w-full px-3 disabled:opacity-70"
             placeholder="Enter your email"
           />
@@ -62,6 +63,7 @@ export default function Login() {
             {...register("password", REQUIRED_FIELD('Password'))}
             type={showPass ? "text" : "password"}
             id="password"
+            disabled={isSubmitting}
             className="main-gold-text text-sm outline-0 w-full px-3 disabled:opacity-70"
             placeholder="Enter your password"
           />
@@ -90,6 +92,7 @@ export default function Login() {
       <div className="flex flex-col gap-4 mt-8">
         <button
           type="submit"
+          disabled={isSubmitting}
           className="capitalize font-semibold main-gold-bg rounded-lg w-full hover:opacity-85 cursor-pointer disabled:opacity-50 disabled:cursor-progress p-3"
         >
           sign in
