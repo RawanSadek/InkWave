@@ -7,6 +7,15 @@ export const axiosInstances = axios.create({
 //   headers: { Authorization: localStorage.getItem("token") },
 });
 
+//Auth URLs
+const AUTH_BASE_URL = `${baseURL}/auth`;
+export const AUTH_URLs = {
+    LOGIN: `${AUTH_BASE_URL}/login`,
+    REGISTER: `${AUTH_BASE_URL}/register`,
+    FORGOT_PASSWORD: `${AUTH_BASE_URL}/forgot-password`,
+    RESET_PASSWORD: `${AUTH_BASE_URL}/reset-password`,
+}
+
 //Products URLs
 const PRODUCTS_BASE_URL = `${baseURL}/products`;
 export const PRODUCTS_URLs = 
