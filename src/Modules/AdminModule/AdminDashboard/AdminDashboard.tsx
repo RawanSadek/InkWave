@@ -1,8 +1,126 @@
+import { useEffect, useState } from "react";
+import { BsBoxSeam } from "react-icons/bs";
+import { GoTag } from "react-icons/go";
+import { MdOutlinePendingActions } from "react-icons/md";
+import { PiShoppingBagOpen } from "react-icons/pi";
+import { axiosInstances, CATEGORIES_URLs, ORDERS_URLs, PRODUCTS_URLs } from "../../../Services/ENDPOINTS";
+import type { AxiosError } from "axios";
+import { toast } from "react-toastify";
+import numLoader from '../../../assets/Images/num-loader.gif'
 
 export default function AdminDashboard() {
+
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [pendingOrders, setPendingOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const getAllCategories = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosInstances.get(CATEGORIES_URLs.GET_ALL);
+      setCategories(response.data);
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+    setLoading(false);
+  };
+
+  const getAllProducts = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosInstances.get(PRODUCTS_URLs.GET_ALL);
+      setProducts(response.data);
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+    setLoading(false);
+  };
+
+  const getAllOrders = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosInstances.get(ORDERS_URLs.GET_ALL);
+      setOrders(response.data);
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getAllCategories();
+    getAllProducts();
+    // getAllOrders();
+    // getPendingOrders
+  }, [])
+
   return (
-    <div>
-      AdminDashboard
-    </div>
+    <>
+      {/* Header */}
+      <div className="">
+        <div>
+          <h2 className="capitalize text-3xl main-gold-text font-semibold">
+            Dashboard
+          </h2>
+          <p className="secondary-text my-3 ">
+            Welcome to InkWave Admin Portal
+          </p>
+        </div>
+      </div>
+
+      <div className="flex justify-between items-center gap-10">
+
+        {/* Total Products */}
+        <div className="ring-[0.3px] ring-[#bf8b14] rounded-lg p-5 secondary-bg flex flex-col justify-between items-start gap-3 w-1/4">
+          <div className="bg-[#2b7ffc1a] rounded-xl p-3">
+            <BsBoxSeam className="text-[#2b7dfc]" size={22} />
+          </div>
+          <p className="secondary-text capitalize">total products</p>
+          {!loading ? <p className="main-gold-text text-[30px] font-semibold">{products.length}</p> :
+            <img src={numLoader} alt="loading" className="w-[12%]" />
+          }
+        </div>
+
+        {/* Total categories */}
+        <div className="ring-[0.3px] ring-[#bf8b14] rounded-lg p-5 secondary-bg flex flex-col justify-between items-start gap-3 w-1/4">
+          <div className="bg-[#ab46ff1a] rounded-xl p-3">
+            <GoTag className="text-[#ab46ff]" size={22} />
+          </div>
+          <p className="secondary-text capitalize">total categories</p>
+          {!loading ? <p className="main-gold-text text-[30px] font-semibold">{categories.length}</p> :
+            <img src={numLoader} alt="loading" className="w-[12%]" />
+          }
+        </div>
+
+        {/* Pending Orders */}
+        <div className="ring-[0.3px] ring-[#bf8b14] rounded-lg p-5 secondary-bg flex flex-col justify-between items-start gap-3 w-1/4">
+          <div className="bg-[#00c9501a] rounded-xl p-3">
+
+            <MdOutlinePendingActions className="text-[#00c950]" size={22} />
+          </div>
+          <p className="secondary-text capitalize">pending orders</p>
+          {!loading ? <p className="main-gold-text text-[30px] font-semibold">{pendingOrders.length}</p> :
+            <img src={numLoader} alt="loading" className="w-[12%]" />
+          }
+        </div>
+
+        {/* Total Orders */}
+        <div className="ring-[0.3px] ring-[#bf8b14] rounded-lg p-5 secondary-bg flex flex-col justify-between items-start gap-3 w-1/4">
+          <div className="bg-[#bf8b141a] rounded-xl p-3">
+
+            <PiShoppingBagOpen className="main-gold-text" size={25} />
+          </div>
+          <p className="secondary-text capitalize">total orders</p>
+          {!loading ? <p className="main-gold-text text-[30px] font-semibold">{orders.length}</p> :
+            <img src={numLoader} alt="loading" className="w-[12%]" />
+          }
+        </div>
+      </div>
+    </>
   )
 }

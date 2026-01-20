@@ -20,6 +20,7 @@ export default function Login() {
     try {
       const response  = await axiosInstances.post(AUTH_URLs.LOGIN, data);
       toast.success("Welcome to Ink Wave!");
+      localStorage.setItem('token',response?.data?.token);
       navigate('/home');
     } catch (err) {
       const error = err as AxiosError<{message: string}>;

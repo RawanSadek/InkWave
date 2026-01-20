@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import type { categoriesFormData } from "../../../Services/INTERFACES";
 import { REQUIRED_FIELD, URL_VALIDATION } from "../../../Services/VALIDATIONS";
 import noImg from "../../../assets/Images/noImage.png";
+import noImgPreview from "../../../assets/Images/no-img-preview.png";
 import loadingImg from "../../../assets/Images/loading4.gif";
 import { FaRegEye } from "react-icons/fa";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation";
@@ -17,9 +18,11 @@ export default function CategoriesList() {
   const [formOpen, setFormOpen] = useState(false);
   const [formMode, setFormMode] = useState<"add" | "edit" | "view">();
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] =
     useState<categoriesFormData | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+
 
   const {
     register,
@@ -107,12 +110,12 @@ export default function CategoriesList() {
   useEffect(() => {
     if (formMode === "edit" || formMode === "view") {
       reset({
-        imageUrl: selectedCategory?.imageUrl,
+        image: selectedCategory?.image,
         name: selectedCategory?.name,
       });
     } else if (formMode === "add") {
       reset({
-        imageUrl: "",
+        image: null,
         name: "",
       });
     }
@@ -161,7 +164,7 @@ export default function CategoriesList() {
             >
               <div className="w-full h-[75%]">
                 <img
-                  src={category?.imageUrl}
+                  src={category?.image}
                   alt="category img"
                   draggable={false}
                   className="w-full h-full"
@@ -192,7 +195,7 @@ export default function CategoriesList() {
                       setFormOpen(true);
                     }}
                     className="main-gold-text rounded-lg hover:bg-[#bc9c0024] text-[30px] md:text-[30px]"
-                    // size={30}
+                  // size={30}
                   />
                   <BiTrash
                     onClick={() => {
@@ -258,25 +261,39 @@ export default function CategoriesList() {
                 {/* Category Image */}
                 <div className="my-4">
                   <label
-                    htmlFor="category-img"
+                    htmlFor="image"
                     className="mb-2 text-sm font-medium main-gold-text"
                   >
-                    Image URL
+                    Image
                   </label>
                   <input
-                    disabled={formMode === "view"}
-                    type="text"
-                    id="category-img"
-                    className="mt-2 main-gold-text text-sm rounded-lg ring-[0.3px] ring-[#bf8b14] focus:ring-1 outline-0 w-full p-3 disabled:opacity-70"
-                    {...register("imageUrl", URL_VALIDATION)}
+                    type="file"
+                    id="image"
+                    accept="image/*"
+                    {...register("image", REQUIRED_FIELD('Image'))}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setPreview(URL.createObjectURL(file));
+                      }
+                    }}
+                    className="block mt-4 w-full text-sm main-gold-text file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#bf8b14] file:text-black hover:file:opacity-80"
                   />
-                  {errors.imageUrl && (
+
+                    {/* Image preview */}
+                  <div className="mt-4 h-50 w-[70%] mx-auto rounded-lg ring-[0.3px] ring-[#bf8b14] overflow-hidden flex justify-center items-center">
+                    <img
+                      src={preview || selectedCategory?.image || noImgPreview}
+                      alt="preview"
+                      className="w-full h-full "
+                    />
+                  </div>
+                  {errors.image && (
                     <p className="text-red-600 text-sm mt-1">
-                      {errors.imageUrl.message}
+                      {errors.image.message}
                     </p>
                   )}
                 </div>
-
                 <div className="flex justify-end gap-3 my-5 *:py-2">
                   <button
                     type="submit"
@@ -307,9 +324,9 @@ export default function CategoriesList() {
       {isOpen && (
         <DeleteConfirmation
           isOpen={isOpen}
-          itemName={selectedCategory?.name?? null}
+          itemName={selectedCategory?.name ?? null}
           entityName="category"
-          isLoading = {loading}
+          isLoading={loading}
           onClose={() => {
             setIsOpen(false);
             setSelectedCategory(null);

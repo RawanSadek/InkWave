@@ -3,8 +3,8 @@ import axios from "axios";
 const baseURL = "http://localhost:8080/api";
 
 export const axiosInstances = axios.create({
-  baseURL: baseURL
-//   headers: { Authorization: localStorage.getItem("token") },
+  baseURL: baseURL,
+  headers: { Authorization: `Bearer ${localStorage.getItem("token") }`},
 });
 
 //Auth URLs
@@ -36,4 +36,15 @@ export const CATEGORIES_URLs =
     CREATE: `${CATEGORIES_BASE_URL}`,
     UPDATE: (id: string) => `${CATEGORIES_BASE_URL}/${id}`,
     DELETE: (id: string) => `${CATEGORIES_BASE_URL}/${id}`,
+}
+
+//Orders URLs
+const ORDERS_BASE_URL = `${baseURL}/orders`;
+export const ORDERS_URLs = 
+{
+    GET_ALL: `${ORDERS_BASE_URL}`,
+    GET_BY_ID: (id: string) => `${ORDERS_BASE_URL}/${id}`,
+    CREATE: `${ORDERS_BASE_URL}`,
+    UPDATE: (id: string) => `${ORDERS_BASE_URL}/${id}`,
+    DELETE: (id: string) => `${ORDERS_BASE_URL}/${id}`,
 }

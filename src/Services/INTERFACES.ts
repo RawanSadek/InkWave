@@ -1,4 +1,18 @@
+import type { JwtPayload } from "jwt-decode";
+import type { ReactNode } from "react";
+
 // Auth Interfaces
+export interface authContextType {
+  loginData: JwtPayload | null;
+  getLoginData: () => void;
+  logout: () => void;
+  // userProfile: loginFormData;
+}
+
+export interface AuthProviderProps {
+  children: ReactNode;
+}
+
 export interface loginFormData {
   email: string;
   password: string;
@@ -6,7 +20,6 @@ export interface loginFormData {
 
 export interface registerFormData {
   email: string;
-  userName: string
   password: string;
   confirmPassword: string;
 }
@@ -14,8 +27,15 @@ export interface registerFormData {
 // Categories Interfaces
 export interface categoriesFormData {
   name: string | null;
-  imageUrl: string;
+  image: string|null;
   id: string;
+}
+
+// User Interfaces
+export interface UserData{
+  sub: string;
+  password: string;
+  role: 'admin'|'customer'
 }
 
 // Shared Interfaces

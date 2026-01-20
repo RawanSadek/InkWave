@@ -57,28 +57,6 @@ export default function Register() {
         )}
       </div>
 
-      {/* Username */}
-      <div className="flex flex-col gap-2 mt-4">
-        <label htmlFor="username" className="capitalize main-gold-text">
-          User Name
-        </label>
-        <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] focus-within:ring-2 outline-0 w-full p-3 flex justify-start items-center gap-2">
-          <CiUser className="secondary-text" size={22} />
-          <input
-            {...register("userName", REQUIRED_FIELD('User Name'))}
-            type="text"
-            id="username"
-            className="main-gold-text text-sm outline-0 w-full px-3 disabled:opacity-70"
-            placeholder="Enter your user name"
-          />
-        </div>
-        {errors.userName && (
-          <p className="text-red-600 text-sm mt-1">
-            {errors.userName.message}
-          </p>
-        )}
-      </div>
-
       {/* Password */}
       <div className="flex flex-col gap-2 mt-4">
         <label htmlFor="password" className="capitalize main-gold-text">
