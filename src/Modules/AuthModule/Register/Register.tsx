@@ -6,30 +6,43 @@ import { AUTH_URLs, axiosInstances } from "../../../Services/ENDPOINTS";
 import { toast } from "react-toastify";
 import type { AxiosError } from "axios";
 import { VscMail } from "react-icons/vsc";
-import { CONFIRM_PASSWORD_VALIDATION, EMAIL_VALIDATION, PASSWORD_VALIDATION, REQUIRED_FIELD } from "../../../Services/VALIDATIONS";
-import { CiUser } from "react-icons/ci";
+import {
+  CONFIRM_PASSWORD_VALIDATION,
+  EMAIL_VALIDATION,
+  PASSWORD_VALIDATION,
+} from "../../../Services/VALIDATIONS";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 export default function Register() {
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
-  const { register, handleSubmit, formState: { errors, isSubmitting }, watch, trigger } = useForm<registerFormData>();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    watch,
+    trigger,
+  } = useForm<registerFormData>();
 
   const navigate = useNavigate();
 
   const onSubmit = async (data: registerFormData) => {
     try {
-      const response  = await axiosInstances.post(AUTH_URLs.REGISTER, data);
-      toast.success("Welcome to Ink Wave!");
-      navigate('/home');
+      const response = await axiosInstances.post(AUTH_URLs.REGISTER, data);
+      toast.success(response?.data?.message || "Welcome to Ink Wave!");
+      navigate("/home");
     } catch (err) {
-      const error = err as AxiosError<{message: string}>;
-      toast.error(error.response?.data.message || "Something went wrong. Please try again.");
+      const error = err as AxiosError<{ message: string }>;
+      toast.error(
+        error.response?.data.message ||
+          "Something went wrong. Please try again.",
+      );
     }
-  } 
+  };
 
-   useEffect(() => {
+  useEffect(() => {
     if (watch("confirmPassword")) trigger("confirmPassword");
   }, [watch("password")]);
 
@@ -51,9 +64,7 @@ export default function Register() {
           />
         </div>
         {errors.email && (
-          <p className="text-red-600 text-sm mt-1">
-            {errors.email.message}
-          </p>
+          <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>
         )}
       </div>
 
@@ -86,9 +97,7 @@ export default function Register() {
           )}
         </div>
         {errors.password && (
-          <p className="text-red-600 text-sm mt-1">
-            {errors.password.message}
-          </p>
+          <p className="text-red-600 text-sm mt-1">{errors.password.message}</p>
         )}
       </div>
 
@@ -100,7 +109,10 @@ export default function Register() {
         <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] focus-within:ring-2 outline-0 w-full p-3 flex justify-start items-center gap-2">
           <IoLockClosedOutline className="secondary-text" size={22} />
           <input
-            {...register("confirmPassword", CONFIRM_PASSWORD_VALIDATION(watch("password")))}
+            {...register(
+              "confirmPassword",
+              CONFIRM_PASSWORD_VALIDATION(watch("password")),
+            )}
             id="confirmPassword"
             className="main-gold-text text-sm outline-0 w-full px-3 disabled:opacity-70"
             placeholder="Confirm your password"
@@ -145,5 +157,5 @@ export default function Register() {
         </div>
       </div>
     </form>
-  )
+  );
 }

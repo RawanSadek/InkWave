@@ -6,12 +6,12 @@ import type { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import type { categoriesFormData } from "../../../Services/INTERFACES";
-import { REQUIRED_FIELD, URL_VALIDATION } from "../../../Services/VALIDATIONS";
+import { REQUIRED_FIELD } from "../../../Services/VALIDATIONS";
 import noImg from "../../../assets/Images/noImage.png";
-import noImgPreview from "../../../assets/Images/no-img-preview.png";
 import loadingImg from "../../../assets/Images/loading4.gif";
 import { FaRegEye } from "react-icons/fa";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation";
+import { FiUpload } from "react-icons/fi";
 
 export default function CategoriesList() {
   const [categories, setCategories] = useState([]);
@@ -22,7 +22,6 @@ export default function CategoriesList() {
   const [preview, setPreview] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] =
     useState<categoriesFormData | null>(null);
-
 
   const {
     register,
@@ -55,17 +54,33 @@ export default function CategoriesList() {
     setLoading(false);
   };
 
+  const appendToFormData = (data: categoriesFormData) => {
+    const formData = new FormData();
+
+    formData.append("name", data.name);
+    if (data.image?.[0]) {
+      formData.append("image", data.image[0]);
+    }
+
+    return formData;
+  };
+
   const onSubmit = async (data: categoriesFormData) => {
+    const formData = appendToFormData(data);
+    // console.log(formData.get("name"));
+    // console.log(formData.get("image"));
+
     if (formMode === "add") {
       try {
         const response = await axiosInstances.post(
           CATEGORIES_URLs.CREATE,
-          data,
+          formData,
         );
         toast.success("Category created successfully"); //to be replced by the backend one
         setCategories(response.data);
         setFormOpen(false);
         reset();
+        setPreview(null)
         // getAllCategories();
       } catch (err) {
         const error = err as AxiosError<{ message: string }>;
@@ -81,6 +96,7 @@ export default function CategoriesList() {
         setCategories(response.data);
         setFormOpen(false);
         reset();
+        setPreview(null)
         // getAllCategories();
       } catch (err) {
         const error = err as AxiosError<{ message: string }>;
@@ -115,7 +131,7 @@ export default function CategoriesList() {
       });
     } else if (formMode === "add") {
       reset({
-        image: null,
+        image: "",
         name: "",
       });
     }
@@ -195,7 +211,7 @@ export default function CategoriesList() {
                       setFormOpen(true);
                     }}
                     className="main-gold-text rounded-lg hover:bg-[#bc9c0024] text-[30px] md:text-[30px]"
-                  // size={30}
+                    // size={30}
                   />
                   <BiTrash
                     onClick={() => {
@@ -270,23 +286,28 @@ export default function CategoriesList() {
                     type="file"
                     id="image"
                     accept="image/*"
-                    {...register("image", REQUIRED_FIELD('Image'))}
+                    disabled={formMode === 'view'}
+                    {...register("image", REQUIRED_FIELD("Image"))}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
                         setPreview(URL.createObjectURL(file));
                       }
                     }}
-                    className="block mt-4 w-full text-sm main-gold-text file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#bf8b14] file:text-black hover:file:opacity-80"
+                    className={` block mt-2 text-sm main-gold-text file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#bf8b14] file:text-black ${formMode !== 'view' ? 'hover:file:opacity-80 file:cursor-pointer': 'opacity-75'} `}
                   />
 
-                    {/* Image preview */}
-                  <div className="mt-4 h-50 w-[70%] mx-auto rounded-lg ring-[0.3px] ring-[#bf8b14] overflow-hidden flex justify-center items-center">
-                    <img
-                      src={preview || selectedCategory?.image || noImgPreview}
-                      alt="preview"
-                      className="w-full h-full "
-                    />
+                  {/* Image preview */}
+                  <div className="mt-4 h-50 w-full mx-auto rounded-lg ring-[0.3px] ring-[#bf8b14] overflow-hidden flex justify-center items-center">
+                    {preview || selectedCategory?.image ? (
+                      <img
+                        src={preview || selectedCategory?.image}
+                        alt="preview"
+                        className="w-full h-full "
+                      />
+                    ) : (
+                      <FiUpload size={50} className="main-gold-text" />
+                    )}
                   </div>
                   {errors.image && (
                     <p className="text-red-600 text-sm mt-1">
@@ -306,6 +327,7 @@ export default function CategoriesList() {
                   <button
                     onClick={() => {
                       setFormOpen(false);
+                      setPreview(null);
                       reset();
                     }}
                     disabled={isSubmitting}

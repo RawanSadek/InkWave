@@ -22,6 +22,7 @@ import { ToastContainer } from 'react-toastify'
 import AdminLayout from './Modules/Shared/AdminLayout/AdminLayout'
 import ProductData from './Modules/AdminModule/ProductData/ProductData'
 import AdminDashboard from './Modules/AdminModule/AdminDashboard/AdminDashboard'
+import ProtectedRoutes from './Modules/Shared/ProtectedRoutes/ProtectedRoutes'
 
 function App() {
 
@@ -55,7 +56,8 @@ function App() {
 
     {
       path: 'dashboard',
-      element: <AdminLayout />,
+      // element: <ProtectedRoutes> <AdminLayout /> </ProtectedRoutes>,
+      element: <AdminLayout/>,
       errorElement: <NotFound />,
       children: [
         { index: true, element: <AdminDashboard /> },
@@ -70,7 +72,7 @@ function App() {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer position='top-center' theme="dark" />
       <RouterProvider router={routes} />
     </>
   )

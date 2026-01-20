@@ -6,7 +6,6 @@ export interface authContextType {
   loginData: JwtPayload | null;
   getLoginData: () => void;
   logout: () => void;
-  // userProfile: loginFormData;
 }
 
 export interface AuthProviderProps {
@@ -26,13 +25,13 @@ export interface registerFormData {
 
 // Categories Interfaces
 export interface categoriesFormData {
-  name: string | null;
-  image: string|null;
+  name: string ;
+  image: string;
   id: string;
 }
 
 // User Interfaces
-export interface UserData{
+export interface profileData{
   sub: string;
   password: string;
   role: 'admin'|'customer'
