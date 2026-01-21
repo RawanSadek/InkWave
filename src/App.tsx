@@ -56,8 +56,8 @@ function App() {
 
     {
       path: 'dashboard',
-      // element: <ProtectedRoutes> <AdminLayout /> </ProtectedRoutes>,
-      element: <AdminLayout/>,
+      element: <ProtectedRoutes> <AdminLayout /> </ProtectedRoutes>,
+      // element: <AdminLayout/>,
       errorElement: <NotFound />,
       children: [
         { index: true, element: <AdminDashboard /> },

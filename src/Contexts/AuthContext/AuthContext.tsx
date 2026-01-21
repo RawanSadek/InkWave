@@ -4,7 +4,9 @@ import {
   type AuthProviderProps,
 } from "../../Services/INTERFACES";
 import { jwtDecode } from "jwt-decode";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
+// import { Navigate, useNavigate } from "react-router-dom";
 
 const AuthContext = createContext<authContextType>({
   loginData: null,
@@ -18,6 +20,8 @@ export function AuthcontextProvider({ children }: AuthProviderProps) {
     const token = localStorage.getItem("token");
     return token ? jwtDecode(token) : null;
   });
+
+//   const navigate  = useNavigate();
 
   const getLoginData = () => {
     const encodedData = localStorage.getItem("token");
@@ -42,9 +46,13 @@ export function AuthcontextProvider({ children }: AuthProviderProps) {
   }, []);
 
   const logout = () => {
+    console.log("Logout triggered");
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
     setLoginData(null);
-    <Navigate to="/login" />;
+    console.log("Logout triggered 2");
+    // <Navigate to="/login" />;
+    // navigate('/login')
   };
 
   return (

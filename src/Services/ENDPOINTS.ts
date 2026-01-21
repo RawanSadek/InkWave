@@ -1,17 +1,30 @@
 import axios from "axios";
 
 const baseURL = "http://localhost:8080/api";
+// const AUTH_URL = 'http://localhost:8080';
 
 export const axiosInstances = axios.create({
   baseURL: baseURL,
-  headers: { Authorization: `Bearer ${localStorage.getItem("token") }`},
+  // headers: { Authorization: localStorage.getItem("token")},
+});
+
+axiosInstances.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token && config.method !== 'get') {
+    config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    delete config.headers.Authorization;
+  }
+
+  return config;
 });
 
 //Auth URLs
-const AUTH_BASE_URL = `${baseURL}/auth`;
+const AUTH_BASE_URL = `${baseURL}/users`;
 export const AUTH_URLs = {
     LOGIN: `${AUTH_BASE_URL}/login`,
-    REGISTER: `${AUTH_BASE_URL}/register`,
+    REGISTER: `${AUTH_BASE_URL}/Register`,
     FORGOT_PASSWORD: `${AUTH_BASE_URL}/forgot-password`,
     RESET_PASSWORD: `${AUTH_BASE_URL}/reset-password`,
 }

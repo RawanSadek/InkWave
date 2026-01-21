@@ -18,12 +18,15 @@ export default function Login() {
 
   const onSubmit = async (data: loginFormData) => {
     try {
-      const response  = await axiosInstances.post(AUTH_URLs.LOGIN, data);
+      const response = await axiosInstances.post(AUTH_URLs.LOGIN, data);
       toast.success("Welcome to Ink Wave!");
-      localStorage.setItem('token',response?.data?.token);
-      navigate('/home');
+      localStorage.setItem('token', response?.data?.token);
+      localStorage.setItem('role', response?.data?.role);
+      if (response?.data?.role === 'ADMIN') navigate('/dashboard');
+      else
+        navigate('/home');
     } catch (err) {
-      const error = err as AxiosError<{message: string}>;
+      const error = err as AxiosError<{ message: string }>;
       toast.error(error.response?.data.message || "Something went wrong. Please try again.");
     }
   }

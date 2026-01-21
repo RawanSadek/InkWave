@@ -7,6 +7,7 @@ import { axiosInstances, CATEGORIES_URLs, ORDERS_URLs, PRODUCTS_URLs } from "../
 import type { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import numLoader from '../../../assets/Images/num-loader.gif'
+import { useNavigate } from "react-router-dom";
 
 export default function AdminDashboard() {
 
@@ -15,6 +16,8 @@ export default function AdminDashboard() {
   const [orders, setOrders] = useState([]);
   const [pendingOrders, setPendingOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const getAllCategories = async () => {
     setLoading(true);
@@ -73,7 +76,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <div className="flex justify-between items-center gap-10">
+      <div className="flex justify-between items-center gap-10 my-10">
 
         {/* Total Products */}
         <div className="ring-[0.3px] ring-[#bf8b14] rounded-lg p-5 secondary-bg flex flex-col justify-between items-start gap-3 w-1/4">
@@ -103,7 +106,7 @@ export default function AdminDashboard() {
 
             <MdOutlinePendingActions className="text-[#00c950]" size={22} />
           </div>
-          <p className="secondary-text capitalize">pending orders</p>
+          <p className="secondary-text capitalize">out of stock</p>
           {!loading ? <p className="main-gold-text text-[30px] font-semibold">{pendingOrders.length}</p> :
             <img src={numLoader} alt="loading" className="w-[12%]" />
           }
@@ -115,10 +118,32 @@ export default function AdminDashboard() {
 
             <PiShoppingBagOpen className="main-gold-text" size={25} />
           </div>
-          <p className="secondary-text capitalize">total orders</p>
+          <p className="secondary-text capitalize">low stock products</p>
           {!loading ? <p className="main-gold-text text-[30px] font-semibold">{orders.length}</p> :
             <img src={numLoader} alt="loading" className="w-[12%]" />
           }
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row justify-between items-center gap-10 *:ring-[0.3px] *:ring-[#bf8b14] *:rounded-lg *:p-5 *:w-full *:md:w-1/2">
+      {/* Quic Actions */}
+        <div className="secondary-bg ">
+          <h4 className="main-gold-text font-semibold text-xl capitalize">quick actions</h4>
+          <div className="mt-4 flex flex-col justify-between items-start gap-3 *:w-full *:capitalize *:hover:bg-[#2a2a2aa1] *:font-semibold">
+            <div onClick={()=>navigate('/dashboard/categories-list', { state: { openFlag: true, mode: 'add' } })} className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover"><span className="text-2xl">+</span> create category</div>
+            <div onClick={()=>navigate('/dashboard/products-list', { state: { openFlag: true, mode: 'add' } })} className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover"><span className="text-2xl">+</span> add new product</div>
+            <div onClick={()=>navigate('/dashboard/orders-list', { state: { openFlag: true, mode: 'add' } })} className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover flex justify-start items-center gap-2"><PiShoppingBagOpen size={20}/> view orders</div>
+          </div>
+        </div>
+
+
+        <div className="secondary-bg ">
+          <h4 className="main-gold-text font-semibold text-xl capitalize">quick actions</h4>
+          <div className="mt-4 flex flex-col justify-between items-start gap-3 *:w-full *:capitalize *:hover:bg-[#2a2a2aa1] *:font-semibold">
+            <div onClick={()=>navigate('/dashboard/categories-list', { state: { openFlag: true, mode: 'add' } })} className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover"><span className="text-2xl">+</span> pending orders</div>
+            <div onClick={()=>navigate('/dashboard/products-list', { state: { openFlag: true, mode: 'add' } })} className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover"><span className="text-2xl">+</span> add new product</div>
+            <div onClick={()=>navigate('/dashboard/orders-list', { state: { openFlag: true, mode: 'add' } })} className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover flex justify-start items-center gap-2"><PiShoppingBagOpen size={20}/> canceled orders</div>
+          </div>
         </div>
       </div>
     </>

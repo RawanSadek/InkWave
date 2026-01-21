@@ -12,11 +12,16 @@ import loadingImg from "../../../assets/Images/loading4.gif";
 import { FaRegEye } from "react-icons/fa";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation";
 import { FiUpload } from "react-icons/fi";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function CategoriesList() {
+
+  const location = useLocation();
+  const { openFlag, mode } = location.state || {}; // default to empty if no state
+const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
-  const [formOpen, setFormOpen] = useState(false);
-  const [formMode, setFormMode] = useState<"add" | "edit" | "view">();
+  const [formOpen, setFormOpen] = useState(openFlag || false);
+  const [formMode, setFormMode] = useState<"add" | "edit" | "view"|null>(mode||null);
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
@@ -57,7 +62,17 @@ export default function CategoriesList() {
   const appendToFormData = (data: categoriesFormData) => {
     const formData = new FormData();
 
-    formData.append("name", data.name);
+    const categoryPayload = {
+    name: data.name,
+  };
+
+    formData.append(
+    "category",
+    new Blob([JSON.stringify(categoryPayload)], {
+      type: "application/json",
+    })
+  );
+
     if (data.image?.[0]) {
       formData.append("image", data.image[0]);
     }
@@ -66,8 +81,9 @@ export default function CategoriesList() {
   };
 
   const onSubmit = async (data: categoriesFormData) => {
+    // console.log(data)
     const formData = appendToFormData(data);
-    // console.log(formData.get("name"));
+    // console.log(formData.get("category"));
     // console.log(formData.get("image"));
 
     if (formMode === "add") {
@@ -90,7 +106,7 @@ export default function CategoriesList() {
       try {
         const response = await axiosInstances.put(
           CATEGORIES_URLs.UPDATE(selectedCategory.id),
-          data,
+          formData,
         );
         toast.success("Category updated successfully"); //to be replced by the backend one
         setCategories(response.data);
@@ -103,6 +119,7 @@ export default function CategoriesList() {
         toast.error(error.response?.data?.message || "Something went wrong");
       }
     }
+    
   };
 
   const deleteCategory = async (id: string) => {
@@ -121,6 +138,13 @@ export default function CategoriesList() {
 
   useEffect(() => {
     getAllCategories();
+    reset();
+    setPreview(null);
+
+    if (openFlag) {
+    // Clear the location state after initial mount to avoid reopening on refresh
+    navigate(location.pathname, { replace: true, state: {} });
+  }
   }, []);
 
   useEffect(() => {
