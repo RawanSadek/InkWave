@@ -113,6 +113,7 @@ export default function Register() {
               "confirmPassword",
               CONFIRM_PASSWORD_VALIDATION(watch("password")),
             )}
+            type={showConfirmPass ? "text" : "password"}
             id="confirmPassword"
             className="main-gold-text text-sm outline-0 w-full px-3 disabled:opacity-70"
             placeholder="Confirm your password"

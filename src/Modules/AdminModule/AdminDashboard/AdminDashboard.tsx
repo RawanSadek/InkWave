@@ -1,20 +1,29 @@
 import { useEffect, useState } from "react";
 import { BsBoxSeam } from "react-icons/bs";
 import { GoTag } from "react-icons/go";
-import { MdOutlinePendingActions } from "react-icons/md";
-import { PiShoppingBagOpen } from "react-icons/pi";
-import { axiosInstances, CATEGORIES_URLs, ORDERS_URLs, PRODUCTS_URLs } from "../../../Services/ENDPOINTS";
+import { MdOutlineCancel, MdOutlinePendingActions } from "react-icons/md";
+import { PiArrowArcLeftBold, PiShoppingBagOpen } from "react-icons/pi";
+import {
+  axiosInstances,
+  CATEGORIES_URLs,
+  ORDERS_URLs,
+  PRODUCTS_URLs,
+} from "../../../Services/ENDPOINTS";
 import type { AxiosError } from "axios";
 import { toast } from "react-toastify";
-import numLoader from '../../../assets/Images/num-loader.gif'
+import numLoader from "../../../assets/Images/num-loader.gif";
+// import loadingImg from "../../../assets/Images/loading4.gif";
 import { useNavigate } from "react-router-dom";
+import { TbBoxOff } from "react-icons/tb";
+import { TfiDropbox } from "react-icons/tfi";
 
 export default function AdminDashboard() {
-
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [orders, setOrders] = useState([]);
   const [pendingOrders, setPendingOrders] = useState([]);
+  const [todaysOrders, setTodaysOrders] = useState([]);
+  const [cancelledOrders, setCancelledOrdes] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -60,7 +69,7 @@ export default function AdminDashboard() {
     getAllProducts();
     // getAllOrders();
     // getPendingOrders
-  }, [])
+  }, []);
 
   return (
     <>
@@ -76,76 +85,161 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <div className="flex justify-between items-center gap-10 my-10">
-
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 my-10">
         {/* Total Products */}
-        <div className="ring-[0.3px] ring-[#bf8b14] rounded-lg p-5 secondary-bg flex flex-col justify-between items-start gap-3 w-1/4">
+        <div className="ring-[0.3px] ring-[#bf8b14] rounded-lg p-5 secondary-bg flex flex-col justify-between items-start gap-3">
           <div className="bg-[#2b7ffc1a] rounded-xl p-3">
             <BsBoxSeam className="text-[#2b7dfc]" size={22} />
           </div>
           <p className="secondary-text capitalize">total products</p>
-          {!loading ? <p className="main-gold-text text-[30px] font-semibold">{products.length}</p> :
+          {!loading ? (
+            <p className="main-gold-text text-[30px] font-semibold">
+              {products.length}
+            </p>
+          ) : (
             <img src={numLoader} alt="loading" className="w-[12%]" />
-          }
+          )}
         </div>
 
         {/* Total categories */}
-        <div className="ring-[0.3px] ring-[#bf8b14] rounded-lg p-5 secondary-bg flex flex-col justify-between items-start gap-3 w-1/4">
+        <div className="ring-[0.3px] ring-[#bf8b14] rounded-lg p-5 secondary-bg flex flex-col justify-between items-start gap-3">
           <div className="bg-[#ab46ff1a] rounded-xl p-3">
             <GoTag className="text-[#ab46ff]" size={22} />
           </div>
           <p className="secondary-text capitalize">total categories</p>
-          {!loading ? <p className="main-gold-text text-[30px] font-semibold">{categories.length}</p> :
+          {!loading ? (
+            <p className="main-gold-text text-[30px] font-semibold">
+              {categories.length}
+            </p>
+          ) : (
             <img src={numLoader} alt="loading" className="w-[12%]" />
-          }
+          )}
         </div>
 
-        {/* Pending Orders */}
-        <div className="ring-[0.3px] ring-[#bf8b14] rounded-lg p-5 secondary-bg flex flex-col justify-between items-start gap-3 w-1/4">
+        {/* Out of Stock Products */}
+        <div className="ring-[0.3px] ring-[#bf8b14] rounded-lg p-5 secondary-bg flex flex-col justify-between items-start gap-3">
           <div className="bg-[#00c9501a] rounded-xl p-3">
-
-            <MdOutlinePendingActions className="text-[#00c950]" size={22} />
+            <TbBoxOff className="text-[#00c950]" size={22} />
           </div>
           <p className="secondary-text capitalize">out of stock</p>
-          {!loading ? <p className="main-gold-text text-[30px] font-semibold">{pendingOrders.length}</p> :
+          {!loading ? (
+            <p className="main-gold-text text-[30px] font-semibold">
+              {pendingOrders.length}
+            </p>
+          ) : (
             <img src={numLoader} alt="loading" className="w-[12%]" />
-          }
+          )}
         </div>
 
         {/* Total Orders */}
-        <div className="ring-[0.3px] ring-[#bf8b14] rounded-lg p-5 secondary-bg flex flex-col justify-between items-start gap-3 w-1/4">
+        <div className="ring-[0.3px] ring-[#bf8b14] rounded-lg p-5 secondary-bg flex flex-col justify-between items-start gap-3">
           <div className="bg-[#bf8b141a] rounded-xl p-3">
-
-            <PiShoppingBagOpen className="main-gold-text" size={25} />
+            <TfiDropbox className="main-gold-text" size={22} />
           </div>
           <p className="secondary-text capitalize">low stock products</p>
-          {!loading ? <p className="main-gold-text text-[30px] font-semibold">{orders.length}</p> :
+          {!loading ? (
+            <p className="main-gold-text text-[30px] font-semibold">
+              {orders.length}
+            </p>
+          ) : (
             <img src={numLoader} alt="loading" className="w-[12%]" />
-          }
+          )}
         </div>
       </div>
 
       <div className="flex flex-col md:flex-row justify-between items-center gap-10 *:ring-[0.3px] *:ring-[#bf8b14] *:rounded-lg *:p-5 *:w-full *:md:w-1/2">
-      {/* Quic Actions */}
+        {/* Quick Actions */}
         <div className="secondary-bg ">
-          <h4 className="main-gold-text font-semibold text-xl capitalize">quick actions</h4>
+          <h4 className="main-gold-text font-semibold text-xl capitalize">
+            quick actions
+          </h4>
           <div className="mt-4 flex flex-col justify-between items-start gap-3 *:w-full *:capitalize *:hover:bg-[#2a2a2aa1] *:font-semibold">
-            <div onClick={()=>navigate('/dashboard/categories-list', { state: { openFlag: true, mode: 'add' } })} className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover"><span className="text-2xl">+</span> create category</div>
-            <div onClick={()=>navigate('/dashboard/products-list', { state: { openFlag: true, mode: 'add' } })} className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover"><span className="text-2xl">+</span> add new product</div>
-            <div onClick={()=>navigate('/dashboard/orders-list', { state: { openFlag: true, mode: 'add' } })} className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover flex justify-start items-center gap-2"><PiShoppingBagOpen size={20}/> view orders</div>
+            <div
+              onClick={() =>
+                navigate("/dashboard/categories-list", {
+                  state: { openFlag: true, mode: "add" },
+                })
+              }
+              className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover"
+            >
+              <span className="text-2xl">+</span> create category
+            </div>
+            <div
+              onClick={() =>
+                navigate("/dashboard/products-list", {
+                  state: { openFlag: true, mode: "add" },
+                })
+              }
+              className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover"
+            >
+              <span className="text-2xl">+</span> add new product
+            </div>
+            <div
+              onClick={() =>
+                navigate("/dashboard/orders-list", {
+                  state: { openFlag: true, mode: "add" },
+                })
+              }
+              className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover flex justify-start items-center gap-2"
+            >
+              <PiShoppingBagOpen size={20} /> view orders
+            </div>
           </div>
         </div>
 
-
         <div className="secondary-bg ">
-          <h4 className="main-gold-text font-semibold text-xl capitalize">quick actions</h4>
-          <div className="mt-4 flex flex-col justify-between items-start gap-3 *:w-full *:capitalize *:hover:bg-[#2a2a2aa1] *:font-semibold">
-            <div onClick={()=>navigate('/dashboard/categories-list', { state: { openFlag: true, mode: 'add' } })} className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover"><span className="text-2xl">+</span> pending orders</div>
-            <div onClick={()=>navigate('/dashboard/products-list', { state: { openFlag: true, mode: 'add' } })} className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover"><span className="text-2xl">+</span> add new product</div>
-            <div onClick={()=>navigate('/dashboard/orders-list', { state: { openFlag: true, mode: 'add' } })} className="rounded-lg main-gold-text px-5 py-3 bg-[#2a2a2a] cursor-pointer hover flex justify-start items-center gap-2"><PiShoppingBagOpen size={20}/> canceled orders</div>
+          <h4 className="main-gold-text font-semibold text-xl capitalize">
+            recent activities
+          </h4>
+          <div className="mt-4 flex flex-col justify-between items-start gap-3 *:w-full *:capitalize">
+
+            {/* Todays Orders */}
+            <div className="flex justify-start items-center gap-2 py-1.5">
+              <div className=" bg-[#00c9501a] h-full  p-1.5 rounded-lg">
+                <PiArrowArcLeftBold className="text-[#00c950]" size={18} />
+              </div>
+              <div className="flex flex-col justify-between items-start">
+                <p className="main-gold-text text-sm">today's orders</p>
+                <small className="secondary-text">
+                  {todaysOrders.length < 1 && "no orders received today"}
+                  {todaysOrders.length === 1 && todaysOrders.length + " order"}
+                  {todaysOrders.length > 1 && todaysOrders.length + " orders"}
+                </small>
+              </div>
+            </div>
+
+            {/* Pending Orders */}
+            <div className="flex justify-start items-center gap-2 py-1.5">
+              <div className=" bg-[#2b7dfc1a] h-full  p-1.5 rounded-lg">
+                <MdOutlinePendingActions className="text-[#2b7dfc]" size={18} />
+              </div>
+              <div className="flex flex-col justify-between items-start">
+                <p className="main-gold-text text-sm">pending orders</p>
+                <small className="secondary-text">
+                  {pendingOrders.length < 1 && "no pending orders"}
+                  {pendingOrders.length === 1 && pendingOrders.length + " order"}
+                  {pendingOrders.length > 1 && pendingOrders.length + " orders"}
+                </small>
+              </div>
+            </div>
+
+            {/* Cancelled Orders */}
+            <div className="flex justify-start items-center gap-2 py-1.5">
+              <div className=" bg-[#ab46ff1a] h-full  p-1.5 rounded-lg">
+                <MdOutlineCancel className="text-[#ab46ff]" size={18} />
+              </div>
+              <div className="flex flex-col justify-between items-start">
+                <p className="main-gold-text text-sm">cancelled orders</p>
+                <small className="secondary-text">
+                  {cancelledOrders.length < 1 && "no cancelled orders"}
+                  {cancelledOrders.length === 1 && cancelledOrders.length + " order"}
+                  {cancelledOrders.length > 1 && cancelledOrders.length + " orders"}
+                </small>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }

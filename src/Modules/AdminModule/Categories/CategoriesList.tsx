@@ -9,6 +9,7 @@ import type { categoriesFormData } from "../../../Services/INTERFACES";
 import { REQUIRED_FIELD } from "../../../Services/VALIDATIONS";
 import noImg from "../../../assets/Images/noImage.png";
 import loadingImg from "../../../assets/Images/loading4.gif";
+import formLoading from "../../../assets/Images/num-loader.gif";
 import { FaRegEye } from "react-icons/fa";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation";
 import { FiUpload } from "react-icons/fi";
@@ -73,9 +74,9 @@ const navigate = useNavigate();
     })
   );
 
-    if (data.image?.[0]) {
-      formData.append("image", data.image[0]);
-    }
+    if (data.image && data.image.length > 0) {
+    formData.append("image", data.image[0]);
+  }
 
     return formData;
   };
@@ -149,13 +150,14 @@ const navigate = useNavigate();
 
   useEffect(() => {
     if (formMode === "edit" || formMode === "view") {
+      console.log(selectedCategory?.image)
       reset({
-        image: selectedCategory?.image,
+        // image: selectedCategory?.image,
         name: selectedCategory?.name,
       });
     } else if (formMode === "add") {
       reset({
-        image: "",
+        // image: undefined,
         name: "",
       });
     }
@@ -311,7 +313,9 @@ const navigate = useNavigate();
                     id="image"
                     accept="image/*"
                     disabled={formMode === 'view'}
-                    {...register("image", REQUIRED_FIELD("Image"))}
+                    {...register("image", {
+    required: formMode === "add" ? "Image is required" : false,
+  })}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
@@ -347,6 +351,11 @@ const navigate = useNavigate();
                     className={`capitalize main-gold-bg rounded-lg w-[75%] ${formMode !== "view" && "hover:opacity-85 cursor-pointer"} disabled:opacity-50 disabled:cursor-progress`}
                   >
                     save
+                    {isSubmitting&& <img
+                        src={formLoading}
+                        alt="loading"
+                        className="inline ml-1 w-[5%] "
+                      />}
                   </button>
                   <button
                     onClick={() => {
