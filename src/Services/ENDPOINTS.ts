@@ -5,17 +5,18 @@ const baseURL = "http://localhost:8080/api";
 
 export const axiosInstances = axios.create({
   baseURL: baseURL,
-  // headers: { Authorization: localStorage.getItem("token")},
+  // headers: { Authorization: `Bearer ${localStorage.getItem("token")}`},
 });
 
 axiosInstances.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
 
-  if (token && config.method !== 'get') {
+  if (token && token !== "null" && token !== "undefined" && config.method !== 'get') {
     config.headers.Authorization = `Bearer ${token}`;
-  } else {
-    delete config.headers.Authorization;
-  }
+  } 
+  // else {
+  //   delete config.headers.Authorization;
+  // }
 
   return config;
 });

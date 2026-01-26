@@ -4,7 +4,6 @@ import {
   type AuthProviderProps,
 } from "../../Services/INTERFACES";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
 // import { Navigate } from "react-router-dom";
 // import { Navigate, useNavigate } from "react-router-dom";
 
@@ -46,11 +45,9 @@ export function AuthcontextProvider({ children }: AuthProviderProps) {
   }, []);
 
   const logout = () => {
-    console.log("Logout triggered");
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     setLoginData(null);
-    console.log("Logout triggered 2");
     // <Navigate to="/login" />;
     // navigate('/login')
   };
