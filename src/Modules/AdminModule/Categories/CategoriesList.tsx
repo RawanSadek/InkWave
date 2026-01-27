@@ -16,13 +16,14 @@ import { FiUpload } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function CategoriesList() {
-
   const location = useLocation();
   const { openFlag, mode } = location.state || {}; // default to empty if no state
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [formOpen, setFormOpen] = useState(openFlag || false);
-  const [formMode, setFormMode] = useState<"add" | "edit" | "view"|null>(mode||null);
+  const [formMode, setFormMode] = useState<"add" | "edit" | "view" | null>(
+    mode || null,
+  );
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
@@ -35,18 +36,6 @@ const navigate = useNavigate();
     formState: { errors, isSubmitting },
     reset,
   } = useForm<categoriesFormData>();
-
-  const getAllCategories = async () => {
-    setLoading(true);
-    try {
-      const response = await axiosInstances.get(CATEGORIES_URLs.GET_ALL);
-      setCategories(response.data);
-    } catch (err) {
-      const error = err as AxiosError<{ message: string }>;
-      toast.error(error.response?.data?.message || "Something went wrong");
-    }
-    setLoading(false);
-  };
 
   const getCategoryById = async (id: string) => {
     setLoading(true);
@@ -64,19 +53,19 @@ const navigate = useNavigate();
     const formData = new FormData();
 
     const categoryPayload = {
-    name: data.name,
-  };
+      name: data.name,
+    };
 
     formData.append(
-    "category",
-    new Blob([JSON.stringify(categoryPayload)], {
-      type: "application/json",
-    })
-  );
+      "category",
+      new Blob([JSON.stringify(categoryPayload)], {
+        type: "application/json",
+      }),
+    );
 
     if (data.image && data.image.length > 0) {
-    formData.append("image", data.image[0]);
-  }
+      formData.append("image", data.image[0]);
+    }
 
     return formData;
   };
@@ -97,8 +86,7 @@ const navigate = useNavigate();
         setCategories(response.data);
         setFormOpen(false);
         reset();
-        setPreview(null)
-        // getAllCategories();
+        setPreview(null);
       } catch (err) {
         const error = err as AxiosError<{ message: string }>;
         toast.error(error.response?.data?.message || "Something went wrong");
@@ -113,14 +101,12 @@ const navigate = useNavigate();
         setCategories(response.data);
         setFormOpen(false);
         reset();
-        setPreview(null)
-        // getAllCategories();
+        setPreview(null);
       } catch (err) {
         const error = err as AxiosError<{ message: string }>;
         toast.error(error.response?.data?.message || "Something went wrong");
       }
     }
-    
   };
 
   const deleteCategory = async (id: string) => {
@@ -138,19 +124,29 @@ const navigate = useNavigate();
   };
 
   useEffect(() => {
-    getAllCategories();
+    (async () => {
+      setLoading(true);
+      try {
+        const response = await axiosInstances.get(CATEGORIES_URLs.GET_ALL);
+        setCategories(response.data);
+      } catch (err) {
+        const error = err as AxiosError<{ message: string }>;
+        toast.error(error.response?.data?.message || "Something went wrong");
+      }
+      setLoading(false);
+    })();
     reset();
     setPreview(null);
 
     if (openFlag) {
-    // Clear the location state after initial mount to avoid reopening on refresh
-    navigate(location.pathname, { replace: true, state: {} });
-  }
+      // Clear the location state after initial mount to avoid reopening on refresh
+      navigate(location.pathname, { replace: true, state: {} });
+    }
   }, []);
 
   useEffect(() => {
     if (formMode === "edit" || formMode === "view") {
-      console.log(selectedCategory?.image)
+      console.log(selectedCategory?.image);
       reset({
         // image: selectedCategory?.image,
         name: selectedCategory?.name,
@@ -312,17 +308,18 @@ const navigate = useNavigate();
                     type="file"
                     id="image"
                     accept="image/*"
-                    disabled={formMode === 'view'}
+                    disabled={formMode === "view"}
                     {...register("image", {
-    required: formMode === "add" ? "Image is required" : false,
-  })}
+                      required:
+                        formMode === "add" ? "Image is required" : false,
+                    })}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
                         setPreview(URL.createObjectURL(file));
                       }
                     }}
-                    className={` block mt-2 text-sm main-gold-text file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#bf8b14] file:text-black ${formMode !== 'view' ? 'hover:file:opacity-80 file:cursor-pointer': 'opacity-75'} `}
+                    className={` block mt-2 text-sm main-gold-text file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#bf8b14] file:text-black ${formMode !== "view" ? "hover:file:opacity-80 file:cursor-pointer" : "opacity-75"} `}
                   />
 
                   {/* Image preview */}
@@ -351,11 +348,13 @@ const navigate = useNavigate();
                     className={`capitalize main-gold-bg rounded-lg w-[75%] ${formMode !== "view" && "hover:opacity-85 cursor-pointer"} disabled:opacity-50 disabled:cursor-progress`}
                   >
                     save
-                    {isSubmitting&& <img
+                    {isSubmitting && (
+                      <img
                         src={formLoading}
                         alt="loading"
                         className="inline ml-1 w-[5%] "
-                      />}
+                      />
+                    )}
                   </button>
                   <button
                     onClick={() => {
