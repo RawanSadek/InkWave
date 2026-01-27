@@ -16,6 +16,7 @@ import numLoader from "../../../assets/Images/num-loader.gif";
 import { useNavigate } from "react-router-dom";
 import { TbBoxOff } from "react-icons/tb";
 import { TfiDropbox } from "react-icons/tfi";
+import { RiLoader2Fill } from "react-icons/ri";
 
 export default function AdminDashboard() {
   const [products, setProducts] = useState([]);
@@ -97,7 +98,7 @@ export default function AdminDashboard() {
               {products.length}
             </p>
           ) : (
-            <img src={numLoader} alt="loading" className="w-[12%]" />
+            <RiLoader2Fill className="main-gold-text animate-spin text-lg" />
           )}
         </div>
 
@@ -112,7 +113,7 @@ export default function AdminDashboard() {
               {categories.length}
             </p>
           ) : (
-            <img src={numLoader} alt="loading" className="w-[12%]" />
+            <RiLoader2Fill className="main-gold-text animate-spin text-lg" />
           )}
         </div>
 
@@ -127,7 +128,7 @@ export default function AdminDashboard() {
               {pendingOrders.length}
             </p>
           ) : (
-            <img src={numLoader} alt="loading" className="w-[12%]" />
+            <RiLoader2Fill className="main-gold-text animate-spin text-lg" />
           )}
         </div>
 
@@ -142,7 +143,7 @@ export default function AdminDashboard() {
               {orders.length}
             </p>
           ) : (
-            <img src={numLoader} alt="loading" className="w-[12%]" />
+            <RiLoader2Fill className="main-gold-text animate-spin text-lg" />
           )}
         </div>
       </div>
