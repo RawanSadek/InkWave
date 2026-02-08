@@ -11,7 +11,7 @@ import {
 } from "../../../Services/ENDPOINTS";
 import type { AxiosError } from "axios";
 import { toast } from "react-toastify";
-import numLoader from "../../../assets/Images/num-loader.gif";
+// import numLoader from "../../../assets/Images/num-loader.gif";
 // import loadingImg from "../../../assets/Images/loading4.gif";
 import { useNavigate } from "react-router-dom";
 import { TbBoxOff } from "react-icons/tb";
@@ -97,8 +97,8 @@ export default function AdminDashboard() {
             <p className="main-gold-text text-[30px] font-semibold">
               {products.length}
             </p>
-          ) : (
-            <RiLoader2Fill className="main-gold-text animate-spin text-lg" />
+          ) : (<RiLoader2Fill className="main-gold-text animate-spin text-lg" />
+            
           )}
         </div>
 

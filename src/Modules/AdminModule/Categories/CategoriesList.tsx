@@ -6,14 +6,15 @@ import type { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import type { categoriesFormData } from "../../../Services/INTERFACES";
-import { REQUIRED_FIELD } from "../../../Services/VALIDATIONS";
+import { IMG_VALIDATION, REQUIRED_FIELD } from "../../../Services/VALIDATIONS";
 import noImg from "../../../assets/Images/noImage.png";
 import loadingImg from "../../../assets/Images/loading4.gif";
-import formLoading from "../../../assets/Images/num-loader.gif";
+// import formLoading from "../../../assets/Images/num-loader.gif";
 import { FaRegEye } from "react-icons/fa";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation";
 import { FiUpload } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
+import { RiLoader2Fill } from "react-icons/ri";
 
 export default function CategoriesList() {
   const location = useLocation();
@@ -102,6 +103,7 @@ export default function CategoriesList() {
         setFormOpen(false);
         reset();
         setPreview(null);
+        setSelectedCategory(null);
       } catch (err) {
         const error = err as AxiosError<{ message: string }>;
         toast.error(error.response?.data?.message || "Something went wrong");
@@ -146,7 +148,7 @@ export default function CategoriesList() {
 
   useEffect(() => {
     if (formMode === "edit" || formMode === "view") {
-      console.log(selectedCategory?.image);
+      // console.log(selectedCategory?.image);
       reset({
         // image: selectedCategory?.image,
         name: selectedCategory?.name,
@@ -178,6 +180,7 @@ export default function CategoriesList() {
               reset();
               setFormMode("add");
               setFormOpen(true);
+              setPreview(null);
             }}
             className="transition-all duration-300 main-gold-bg font-semibold px-5 py-3 rounded-lg flex items-center gap-2 hover:opacity-80 cursor-pointer focus:outline-none mt-5 md:mt-0"
           >
@@ -308,22 +311,38 @@ export default function CategoriesList() {
                     type="file"
                     id="image"
                     accept="image/*"
-                    disabled={formMode === "view"}
-                    {...register("image", {
-                      required:
-                        formMode === "add" ? "Image is required" : false,
-                    })}
+                    disabled={formMode === "view" || isSubmitting}
+                    {...register("image", IMG_VALIDATION(formMode))}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
+                      register("image").onChange(e);
                       if (file) {
                         setPreview(URL.createObjectURL(file));
                       }
                     }}
-                    className={` block mt-2 text-sm main-gold-text file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#bf8b14] file:text-black ${formMode !== "view" ? "hover:file:opacity-80 file:cursor-pointer" : "opacity-75"} `}
+                    className={`block mt-2 text-sm text-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#bf8b14] file:text-black enabled:hover:file:opacity-80 enabled:hover:file:cursor-pointer disabled:file:cursor-default disabled:file:opacity-50`}
                   />
 
                   {/* Image preview */}
                   <div className="mt-4 h-50 w-full mx-auto rounded-lg ring-[0.3px] ring-[#bf8b14] overflow-hidden flex justify-center items-center">
+                    {/* {preview || selectedCategory?.image && (
+                      <img
+                        src={preview || selectedCategory?.image}
+                        alt="preview"
+                        className="w-full h-full "
+                      />
+                    )} */}
+                    {/* {selectedCategory?.image  && (
+                      <img
+                        src={selectedCategory?.image}
+                        alt="preview"
+                        className="w-full h-full "
+                      />
+                    )} */}
+                    {/* {!(preview || selectedCategory?.image)
+                     && (
+                      <FiUpload size={50} className="main-gold-text" />
+                    )} */}
                     {preview || selectedCategory?.image ? (
                       <img
                         src={preview || selectedCategory?.image}
@@ -345,15 +364,16 @@ export default function CategoriesList() {
                     type="submit"
                     disabled={isSubmitting}
                     hidden={formMode === "view"}
-                    className={`capitalize main-gold-bg rounded-lg w-[75%] ${formMode !== "view" && "hover:opacity-85 cursor-pointer"} disabled:opacity-50 disabled:cursor-progress`}
+                    className={`capitalize main-gold-bg rounded-lg w-[75%] ${formMode !== "view" && "hover:opacity-85 cursor-pointer"} disabled:opacity-50 disabled:cursor-default`}
                   >
                     save
                     {isSubmitting && (
-                      <img
-                        src={formLoading}
-                        alt="loading"
-                        className="inline ml-1 w-[5%] "
-                      />
+                      // <img
+                      //   src={formLoading}
+                      //   alt="loading"
+                      //   className="inline ml-1 w-[5%] "
+                      // />
+                      <RiLoader2Fill className="text-white animate-spin text-lg inline ms-2" />
                     )}
                   </button>
                   <button
@@ -361,6 +381,7 @@ export default function CategoriesList() {
                       setFormOpen(false);
                       setPreview(null);
                       reset();
+                      setSelectedCategory(null);
                     }}
                     disabled={isSubmitting}
                     className="capitalize main-gold-text ring-[0.2px] rounded-lg w-[25%] hover:bg-[#2c2c2c] cursor-pointer disabled:opacity-50 disabled:cursor-progress"
