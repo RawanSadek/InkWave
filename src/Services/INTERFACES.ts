@@ -30,6 +30,18 @@ export interface categoriesFormData {
   id: string;
 }
 
+// Products Interfaces
+export interface productsFormData {
+  name: string ;
+  images: string[];
+  id: string;
+  price: number;
+  description: string;
+  category: string;
+  quantity: number;
+  visible?: boolean;
+}
+
 // User Interfaces
 export interface profileData{
   sub: string;

@@ -76,7 +76,7 @@ export default function AdminSidebar({
                 <MenuItem
                   icon={<RiBookShelfLine size={20} />}
                   component={<Link to="/dashboard/products-list" />}
-                  className={`rounded-lg px-3 mb-3 ${currentPage === "products-list"
+                  className={`rounded-lg px-3 mb-3 ${(currentPage === "products-list"|| currentPage === "new")
                       ? "bg-[#cea028] text-black"
                       : "hover:bg-[#2a2a2a] hover:text-[#cea028]"
                     }`}

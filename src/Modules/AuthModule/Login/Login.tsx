@@ -27,7 +27,7 @@ export default function Login() {
         navigate('/home');
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
-      toast.error(error.response?.data.message || "Something went wrong. Please try again.");
+      toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
     }
   }
 

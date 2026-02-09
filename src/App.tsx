@@ -62,6 +62,7 @@ function App() {
       children: [
         { index: true, element: <AdminDashboard /> },
         { path: 'products-list', element: <ProductsList /> },
+        { path: 'product-data/new', element: <ProductData /> },
         { path: 'product-data', element: <ProductData /> },
         { path: 'users-list', element: <UsersList /> },
         { path: 'orders-list', element: <OrdersList /> },
