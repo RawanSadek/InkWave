@@ -64,3 +64,28 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
 }
+
+
+/* Scroll Bar */
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--secondary-bg-color);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #bf8b14;
+  border-radius: 30px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #cea028;
+  cursor: pointer;
+}

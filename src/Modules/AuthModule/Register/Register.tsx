@@ -13,6 +13,7 @@ import {
 } from "../../../Services/VALIDATIONS";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { RiLoader2Fill } from "react-icons/ri";
 
 export default function Register() {
   const [showPass, setShowPass] = useState(false);
@@ -147,6 +148,9 @@ export default function Register() {
           className="capitalize font-semibold main-gold-bg rounded-lg w-full hover:opacity-85 cursor-pointer disabled:opacity-50 disabled:cursor-progress p-3"
         >
           sign Up
+          {isSubmitting && (
+            <RiLoader2Fill className="text-white animate-spin text-lg inline ms-2" />
+          )}
         </button>
         <div className="flex justify-between items-center *:hover:opacity-70">
           <Link

@@ -39,6 +39,7 @@ export const PRODUCTS_URLs =
     CREATE: `${PRODUCTS_BASE_URL}`,
     UPDATE: (id: string) => `${PRODUCTS_BASE_URL}/${id}`,
     DELETE: (id: string) => `${PRODUCTS_BASE_URL}/${id}`,
+    GET_AND_FILTER: `${PRODUCTS_BASE_URL}/filter`,
 }
 
 //Categories URLs

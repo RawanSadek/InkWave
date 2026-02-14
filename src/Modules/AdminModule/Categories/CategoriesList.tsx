@@ -368,11 +368,6 @@ export default function CategoriesList() {
                   >
                     save
                     {isSubmitting && (
-                      // <img
-                      //   src={formLoading}
-                      //   alt="loading"
-                      //   className="inline ml-1 w-[5%] "
-                      // />
                       <RiLoader2Fill className="text-white animate-spin text-lg inline ms-2" />
                     )}
                   </button>
