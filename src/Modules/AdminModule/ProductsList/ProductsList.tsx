@@ -16,13 +16,16 @@ import noImg from "../../../assets/Images/noImage.png";
 import loadingImg from "../../../assets/Images/loading4.gif";
 import { FaRegEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { CiSearch } from "react-icons/ci";
+import { TbFilterDollar } from "react-icons/tb";
 
 export default function ProductsList() {
   const [productsLoading, setProductsLoading] = useState(false);
   const [categoriesLoading, setCategoriesLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] =
+    useState<categoriesFormData | null>(null);
   const [searchText, setSearchText] = useState<string | null>(null);
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
@@ -32,15 +35,16 @@ export default function ProductsList() {
   const getProducts = async () => {
     setProductsLoading(true);
     try {
-      const response = await axiosInstances.get(PRODUCTS_URLs.GET_ALL, 
-      //   {
-      //   params: {
-      //     selectedCategory,
-      //     searchText,
-      //     minPrice,
-      //   }
-      // }
-    );
+      const response = await axiosInstances.get(
+        PRODUCTS_URLs.GET_ALL,
+        //   {
+        //   params: {
+        //     selectedCategory,
+        //     searchText,
+        //     minPrice,
+        //   }
+        // }
+      );
       setProducts(response.data);
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
@@ -90,26 +94,49 @@ export default function ProductsList() {
       {/* Main Content */}
       <div className="mt-8">
         {/* Search & Filter */}
-        <div
-          className={`rounded-lg max-w-full overflow-x-auto min-h-6 ${categoriesLoading ? "secondary-bg animate-pulse" : "py-2"}`}
-        >
-          <div className="flex justify-start items-center gap-3">
-            <p
-              onClick={() => setSelectedCategory(null)}
-              className={`py-3 px-5 rounded-lg font-semibold whitespace-nowrap cursor-pointer ${selectedCategory == null ? "main-gold-bg" : "secondary-bg main-gold-text ring-[0.3px] ring-[#bf8b14] hover:ring-[0.5px]"}`}
-            >
-              All Categories
-            </p>
-            {!categoriesLoading &&
-              categories.map((category: categoriesFormData) => (
-                <p
-                  onClick={() => setSelectedCategory(category?.name)}
-                  key={category.id}
-                  className={`py-3 px-5 rounded-lg font-semibold whitespace-nowrap cursor-pointer ${selectedCategory == category.name ? "main-gold-bg" : "secondary-bg main-gold-text ring-[0.3px] ring-[#bf8b14] hover:ring-[0.5px]"}`}
-                >
-                  {category.name}
-                </p>
-              ))}
+        <div className="flex flex-col justify-start items-start gap-7">
+          {/* Filter by Text & Price */}
+          <div className="flex flex-col md:flex-row justify-start items-start gap-3 w-full">
+            {/* Text */}
+            <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] focus-within:ring-1 outline-0 p-3 flex justify-start items-center gap-2 secondary-bg w-[30%]">
+              <CiSearch className="secondary-text" size={22} />
+              <input
+                type="text"
+                id="search-text"
+                className="main-gold-text text-sm outline-0 w-full px-3 disabled:opacity-70"
+                placeholder="Search Products..."
+              />
+            </div>
+
+            {/* Price */}
+            <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] focus-within:ring-2 outline-0 p-3 flex justify-start items-center gap-2 secondary-bg w-[30%]">
+              <TbFilterDollar className="secondary-text" size={20} />
+              
+            </div>
+          </div>
+
+          {/* Filter by Category */}
+          <div
+            className={`rounded-lg max-w-full overflow-x-auto min-h-6 px-1 ${categoriesLoading ? "secondary-bg animate-pulse" : "py-2"}`}
+          >
+            <div className="flex justify-start items-center gap-3">
+              <p
+                onClick={() => setSelectedCategory(null)}
+                className={`py-3 px-5 rounded-lg font-semibold whitespace-nowrap cursor-pointer ${selectedCategory?.id == null ? "main-gold-bg" : "secondary-bg main-gold-text ring-[0.3px] ring-[#bf8b14] hover:ring-[0.5px]"}`}
+              >
+                All
+              </p>
+              {!categoriesLoading &&
+                categories.map((category: categoriesFormData) => (
+                  <p
+                    onClick={() => setSelectedCategory(category)}
+                    key={category.id}
+                    className={`py-3 px-5 rounded-lg font-semibold whitespace-nowrap cursor-pointer ${selectedCategory?.id == category.id ? "main-gold-bg" : "secondary-bg main-gold-text ring-[0.3px] ring-[#bf8b14] hover:ring-[0.5px]"}`}
+                  >
+                    {category.name}
+                  </p>
+                ))}
+            </div>
           </div>
         </div>
         <div></div>
