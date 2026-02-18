@@ -29,6 +29,17 @@ export default function ProductsList() {
   const [searchText, setSearchText] = useState<string | null>(null);
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
+  // const minValue = ((minPrice / 100) * 100).toFixed(0);
+  // const maxValue = ((maxPrice / 100) * 100).toFixed(2);
+  // const [range, setRange] = useState({
+  //   min: 0,
+  //   max: 1000,
+  // });
+
+
+
+
+
 
   const navigate = useNavigate();
 
@@ -109,9 +120,36 @@ export default function ProductsList() {
             </div>
 
             {/* Price */}
-            <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] focus-within:ring-2 outline-0 p-3 flex justify-start items-center gap-2 secondary-bg w-[30%]">
+            <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] focus-within:ring-2 outline-0 p-3 flex justify-start items-start gap-2 secondary-bg w-[30%]">
               <TbFilterDollar className="secondary-text" size={20} />
-              
+              {/* Text Inputs */}
+              <div className="flex justify-between items-center gap-10">
+                {/* Min */}
+                <div>
+
+                  <label htmlFor="minCurrency" className="main-gold-text inline">EGP.</label>
+                  <input
+                    id="minCurrency"
+                    value={minPrice}
+                    className="mt-4 border border-[#cea028] rounded-lg p-1 text-[#cea028] inline"
+                  />
+
+                </div>
+                {/* Max */}
+                <div>
+                  <label htmlFor="maxCurrency" className="main-gold-text inline">EGP.</label>
+
+
+                  <input
+                    id="maxCurrency"
+                    type="text"
+                    value={maxPrice}
+                    className="mt-4 border border-[#cea028] rounded-lg p-1 text-[#cea028] inline"
+                  />
+                </div>
+              </div>
+
+
             </div>
           </div>
 
@@ -166,11 +204,11 @@ export default function ProductsList() {
                     alt="product img"
                     draggable={false}
                     className="w-full h-full"
-                    // onError={(e) => {
-                    //   const img = e.currentTarget;
-                    //   img.onerror = null; // prevent infinite loop
-                    //   img.src = noImg;
-                    // }}
+                  // onError={(e) => {
+                  //   const img = e.currentTarget;
+                  //   img.onerror = null; // prevent infinite loop
+                  //   img.src = noImg;
+                  // }}
                   />
                 </div>
                 <div className=" mt-3 overflow-x-hidden">
@@ -185,16 +223,16 @@ export default function ProductsList() {
                   </p>
                   <div className=" flex justify-end gap-3 *:cursor-pointer *:p-1">
                     <FaRegEye
-                      onClick={() => {}}
+                      onClick={() => { }}
                       className="secondary-text rounded-lg hover:bg-[#8d8d8d30] text-[28px] md:text-[28px]"
                     />
                     <MdOutlineEdit
-                      onClick={() => {}}
+                      onClick={() => { }}
                       className="main-gold-text rounded-lg hover:bg-[#bc9c0024] text-[30px] md:text-[30px]"
-                      // size={30}
+                    // size={30}
                     />
                     <BiTrash
-                      onClick={() => {}}
+                      onClick={() => { }}
                       className="text-red-600 rounded-lg hover:bg-[#a1000024] text-[28px] md:text-[30px]"
                     />
                   </div>
@@ -203,7 +241,7 @@ export default function ProductsList() {
             ))}
           </div>
         )}
-      </div>
+      </div >
     </>
   );
 }

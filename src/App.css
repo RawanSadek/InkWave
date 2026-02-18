@@ -89,3 +89,23 @@
   background: #cea028;
   cursor: pointer;
 }
+
+
+
+.slider-thumb {
+  @apply absolute w-full appearance-none bg-transparent pointer-events-none;
+}
+
+.slider-thumb::-webkit-slider-thumb {
+  pointer-events:auto;
+  appearance: none;
+  height: 18px;
+  width: 18px;
+  border-radius: 9999px;
+  background: #cea028;
+  border: 3px solid #1a1a1a;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
