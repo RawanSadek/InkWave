@@ -120,31 +120,30 @@ export default function ProductsList() {
             </div>
 
             {/* Price */}
-            <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] focus-within:ring-2 outline-0 p-3 flex justify-start items-start gap-2 secondary-bg w-[30%]">
-              <TbFilterDollar className="secondary-text" size={20} />
+            <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] outline-0 p-3 flex justify-start items-start gap-2 secondary-bg w-[30%]">
+              <TbFilterDollar className="secondary-text" size={30} />
               {/* Text Inputs */}
-              <div className="flex justify-between items-center gap-10">
+              <div className="flex justify-evenly items-center">
                 {/* Min */}
-                <div>
-
-                  <label htmlFor="minCurrency" className="main-gold-text inline">EGP.</label>
+                <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] focus-within:ring-1 outline-0 p-1 flex justify-start items-center w-[40%]">
+                  <label htmlFor="minCurrency" className="main-gold-text">EGP.</label>
                   <input
                     id="minCurrency"
                     value={minPrice}
-                    className="mt-4 border border-[#cea028] rounded-lg p-1 text-[#cea028] inline"
+                    className="main-gold-text text-sm outline-0 w-full px-3 disabled:opacity-70"
                   />
 
                 </div>
                 {/* Max */}
-                <div>
-                  <label htmlFor="maxCurrency" className="main-gold-text inline">EGP.</label>
+                <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] focus-within:ring-1 outline-0 p-1 flex justify-start items-center w-[40%]">
+                  <label htmlFor="maxCurrency" className="main-gold-text">EGP.</label>
 
 
                   <input
                     id="maxCurrency"
                     type="text"
                     value={maxPrice}
-                    className="mt-4 border border-[#cea028] rounded-lg p-1 text-[#cea028] inline"
+                    className="main-gold-text text-sm outline-0 w-full px-3 disabled:opacity-70"
                   />
                 </div>
               </div>
