@@ -120,16 +120,30 @@ export default function ProductsList() {
             </div>
 
             {/* Price */}
-            <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] outline-0 p-3 flex justify-start items-start gap-2 secondary-bg w-[30%]">
+            <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] outline-0 p-3 flex justify-start items-start gap-2 secondary-bg w-[35%]">
               <TbFilterDollar className="secondary-text" size={30} />
               {/* Text Inputs */}
-              <div className="flex justify-evenly items-center">
+              <div className="flex justify-evenly items-center flex-1">
                 {/* Min */}
                 <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] focus-within:ring-1 outline-0 p-1 flex justify-start items-center w-[40%]">
                   <label htmlFor="minCurrency" className="main-gold-text">EGP.</label>
                   <input
+                  value={minPrice}
+  onChange={(e) => {
+    const value = Number(e.currentTarget.value);
+   if (value < 0) {
+      setMinPrice(0);
+    } else if (value > 999) {
+      setMinPrice(999);
+    } else {
+      setMinPrice(value);
+    }
+  }}
                     id="minCurrency"
-                    value={minPrice}
+                    // defaultValue={minPrice}
+                    type="number"
+                    min={0}
+                    max={999}
                     className="main-gold-text text-sm outline-0 w-full px-3 disabled:opacity-70"
                   />
 
@@ -140,9 +154,22 @@ export default function ProductsList() {
 
 
                   <input
+                  value={maxPrice}
+  onChange={(e) => {
+    const value = Number(e.currentTarget.value);
+   if (value > 1000) {
+      setMaxPrice(1000);
+    } else if (value < 1) {
+      setMaxPrice(1);
+    } else {
+      setMaxPrice(value);
+    }
+  }}
                     id="maxCurrency"
-                    type="text"
-                    value={maxPrice}
+                    type="number"
+                    min={1}
+                    max={1000}
+                    // defaultValue={maxPrice}
                     className="main-gold-text text-sm outline-0 w-full px-3 disabled:opacity-70"
                   />
                 </div>
