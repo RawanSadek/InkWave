@@ -36,11 +36,6 @@ export default function ProductsList() {
   //   max: 1000,
   // });
 
-
-
-
-
-
   const navigate = useNavigate();
 
   const getProducts = async () => {
@@ -126,19 +121,21 @@ export default function ProductsList() {
               <div className="flex justify-evenly items-center flex-1">
                 {/* Min */}
                 <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] focus-within:ring-1 outline-0 p-1 flex justify-start items-center w-[40%]">
-                  <label htmlFor="minCurrency" className="main-gold-text">EGP.</label>
+                  <label htmlFor="minCurrency" className="main-gold-text">
+                    EGP.
+                  </label>
                   <input
-                  value={minPrice}
-  onChange={(e) => {
-    const value = Number(e.currentTarget.value);
-   if (value < 0) {
-      setMinPrice(0);
-    } else if (value > 999) {
-      setMinPrice(999);
-    } else {
-      setMinPrice(value);
-    }
-  }}
+                    value={minPrice}
+                    onChange={(e) => {
+                      const value = Number(e.currentTarget.value);
+                      if (value < 0) {
+                        setMinPrice(0);
+                      } else if (value > 999) {
+                        setMinPrice(999);
+                      } else {
+                        setMinPrice(value);
+                      }
+                    }}
                     id="minCurrency"
                     // defaultValue={minPrice}
                     type="number"
@@ -146,25 +143,25 @@ export default function ProductsList() {
                     max={999}
                     className="main-gold-text text-sm outline-0 w-full px-3 disabled:opacity-70"
                   />
-
                 </div>
                 {/* Max */}
                 <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] focus-within:ring-1 outline-0 p-1 flex justify-start items-center w-[40%]">
-                  <label htmlFor="maxCurrency" className="main-gold-text">EGP.</label>
-
+                  <label htmlFor="maxCurrency" className="main-gold-text">
+                    EGP.
+                  </label>
 
                   <input
-                  value={maxPrice}
-  onChange={(e) => {
-    const value = Number(e.currentTarget.value);
-   if (value > 1000) {
-      setMaxPrice(1000);
-    } else if (value < 1) {
-      setMaxPrice(1);
-    } else {
-      setMaxPrice(value);
-    }
-  }}
+                    value={maxPrice}
+                    onChange={(e) => {
+                      const value = Number(e.currentTarget.value);
+                      if (value > 1000) {
+                        setMaxPrice(1000);
+                      } else if (value < 1) {
+                        setMaxPrice(1);
+                      } else {
+                        setMaxPrice(value);
+                      }
+                    }}
                     id="maxCurrency"
                     type="number"
                     min={1}
@@ -174,8 +171,6 @@ export default function ProductsList() {
                   />
                 </div>
               </div>
-
-
             </div>
           </div>
 
@@ -230,11 +225,11 @@ export default function ProductsList() {
                     alt="product img"
                     draggable={false}
                     className="w-full h-full"
-                  // onError={(e) => {
-                  //   const img = e.currentTarget;
-                  //   img.onerror = null; // prevent infinite loop
-                  //   img.src = noImg;
-                  // }}
+                    // onError={(e) => {
+                    //   const img = e.currentTarget;
+                    //   img.onerror = null; // prevent infinite loop
+                    //   img.src = noImg;
+                    // }}
                   />
                 </div>
                 <div className=" mt-3 overflow-x-hidden">
@@ -249,16 +244,16 @@ export default function ProductsList() {
                   </p>
                   <div className=" flex justify-end gap-3 *:cursor-pointer *:p-1">
                     <FaRegEye
-                      onClick={() => { }}
+                      onClick={() => {}}
                       className="secondary-text rounded-lg hover:bg-[#8d8d8d30] text-[28px] md:text-[28px]"
                     />
                     <MdOutlineEdit
-                      onClick={() => { }}
+                      onClick={() => {}}
                       className="main-gold-text rounded-lg hover:bg-[#bc9c0024] text-[30px] md:text-[30px]"
-                    // size={30}
+                      // size={30}
                     />
                     <BiTrash
-                      onClick={() => { }}
+                      onClick={() => {}}
                       className="text-red-600 rounded-lg hover:bg-[#a1000024] text-[28px] md:text-[30px]"
                     />
                   </div>
@@ -267,7 +262,7 @@ export default function ProductsList() {
             ))}
           </div>
         )}
-      </div >
+      </div>
     </>
   );
 }
