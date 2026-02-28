@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:8080/api";
+// const baseURL = "http://localhost:8080/api";
+const baseURL = "https://e-commerce-java-spring-boot.onrender.com/api";
 // const AUTH_URL = 'http://localhost:8080';
 
 export const axiosInstances = axios.create({

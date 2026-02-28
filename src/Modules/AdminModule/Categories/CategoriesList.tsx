@@ -42,7 +42,7 @@ export default function CategoriesList() {
     setLoading(true);
     try {
       const response = await axiosInstances.get(CATEGORIES_URLs.GET_BY_ID(id));
-      setSelectedCategory(response.data);
+      setSelectedCategory(response.data.data);
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       toast.error(error.response?.data?.message || "Something went wrong");
@@ -84,7 +84,7 @@ export default function CategoriesList() {
           formData,
         );
         toast.success("Category created successfully"); //to be replced by the backend one
-        setCategories(response.data);
+        setCategories(response.data.data);
         setFormOpen(false);
         reset();
         setPreview(null);
@@ -99,7 +99,7 @@ export default function CategoriesList() {
           formData,
         );
         toast.success("Category updated successfully"); //to be replced by the backend one
-        setCategories(response.data);
+        setCategories(response.data.data);
         setFormOpen(false);
         reset();
         setPreview(null);
@@ -116,7 +116,7 @@ export default function CategoriesList() {
     try {
       const response = await axiosInstances.delete(CATEGORIES_URLs.DELETE(id));
       toast.success(response?.data?.message || "Category deleted successfully");
-      setCategories(response.data);
+      setCategories(response.data.data);
       setIsOpen(false);
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
@@ -130,7 +130,7 @@ export default function CategoriesList() {
       setLoading(true);
       try {
         const response = await axiosInstances.get(CATEGORIES_URLs.GET_ALL);
-        setCategories(response.data);
+        setCategories(response.data.data);
       } catch (err) {
         const error = err as AxiosError<{ message: string }>;
         toast.error(error.response?.data?.message || "Something went wrong");

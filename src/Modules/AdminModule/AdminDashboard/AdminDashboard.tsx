@@ -33,7 +33,7 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       const response = await axiosInstances.get(CATEGORIES_URLs.GET_ALL);
-      setCategories(response.data);
+      setCategories(response.data.data);
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       toast.error(error.response?.data?.message || "Something went wrong");
