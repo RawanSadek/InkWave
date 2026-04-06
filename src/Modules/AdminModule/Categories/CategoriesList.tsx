@@ -136,9 +136,12 @@ export default function CategoriesList() {
         toast.error(error.response?.data?.message || "Something went wrong");
       }
       setLoading(false);
-    })();
-    reset();
+
+      reset();
     setPreview(null);
+    }
+  )();
+    
 
     if (openFlag) {
       // Clear the location state after initial mount to avoid reopening on refresh

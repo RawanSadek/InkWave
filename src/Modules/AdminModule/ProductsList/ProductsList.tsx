@@ -26,7 +26,7 @@ export default function ProductsList() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] =
     useState<categoriesFormData | null>(null);
-  const [searchText, setSearchText] = useState<string | null>(null);
+  // const [searchText, setSearchText] = useState<string | null>(null);
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
   // const minValue = ((minPrice / 100) * 100).toFixed(0);
@@ -60,7 +60,7 @@ export default function ProductsList() {
   };
 
   useEffect(() => {
-    getProducts();
+    
 
     // Get All Categories
     (async () => {
@@ -73,6 +73,8 @@ export default function ProductsList() {
         toast.error(error.response?.data?.message || "Something went wrong");
       }
       setCategoriesLoading(false);
+
+     getProducts(); 
     })();
   }, []);
 
@@ -115,14 +117,14 @@ export default function ProductsList() {
             </div>
 
             {/* Price */}
-            <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] outline-0 p-3 flex justify-start items-start gap-2 secondary-bg w-[35%]">
-              <TbFilterDollar className="secondary-text" size={30} />
+            <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] outline-0 p-2 flex justify-start items-center gap-2 secondary-bg w-[35%]">
+              <TbFilterDollar className="secondary-text" size={22} />
               {/* Text Inputs */}
               <div className="flex justify-evenly items-center flex-1">
                 {/* Min */}
-                <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] focus-within:ring-1 outline-0 p-1 flex justify-start items-center w-[40%]">
+                <div className="rounded-lg  outline-0 p-1 flex justify-start items-center w-[40%]">
                   <label htmlFor="minCurrency" className="main-gold-text">
-                    EGP.
+                    Min.
                   </label>
                   <input
                     value={minPrice}
@@ -143,11 +145,15 @@ export default function ProductsList() {
                     max={999}
                     className="main-gold-text text-sm outline-0 w-full px-3 disabled:opacity-70"
                   />
+                  <label htmlFor="minCurrency" className="main-gold-text">
+                  EGY
+                  </label>
                 </div>
+                {/* <div className="w-2 h-0.5 bg-[#bf8b14]"></div> */}
                 {/* Max */}
-                <div className="rounded-lg ring-[0.3px] ring-[#bf8b14] focus-within:ring-1 outline-0 p-1 flex justify-start items-center w-[40%]">
+                <div className="rounded-lg  outline-0 p-1 flex justify-start items-center w-[40%]">
                   <label htmlFor="maxCurrency" className="main-gold-text">
-                    EGP.
+                    Max.
                   </label>
 
                   <input
@@ -169,6 +175,9 @@ export default function ProductsList() {
                     // defaultValue={maxPrice}
                     className="main-gold-text text-sm outline-0 w-full px-3 disabled:opacity-70"
                   />
+                  <label htmlFor="minCurrency" className="main-gold-text">
+                    EGY
+                  </label>
                 </div>
               </div>
             </div>
@@ -185,7 +194,7 @@ export default function ProductsList() {
               >
                 All
               </p>
-              {!categoriesLoading &&
+              {!categoriesLoading && categories.length > 0 &&
                 categories.map((category: categoriesFormData) => (
                   <p
                     onClick={() => setSelectedCategory(category)}

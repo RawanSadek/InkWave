@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { IoLockClosedOutline } from "react-icons/io5";
@@ -37,6 +37,11 @@ export default function Login() {
       );
     }
   };
+
+  useEffect(() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-5">
