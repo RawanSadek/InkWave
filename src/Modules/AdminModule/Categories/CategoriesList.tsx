@@ -138,10 +138,8 @@ export default function CategoriesList() {
       setLoading(false);
 
       reset();
-    setPreview(null);
-    }
-  )();
-    
+      setPreview(null);
+    })();
 
     if (openFlag) {
       // Clear the location state after initial mount to avoid reopening on refresh
@@ -199,7 +197,13 @@ export default function CategoriesList() {
         </div>
       )}
 
-      {!loading && (
+      {!loading && categories.length === 0 && (
+        <div className="flex flex-col justify-center items-center mt-20 gap-5">
+          <p className="secondary-text text-lg">No categories found!</p>
+        </div>
+      )}
+
+      {!loading && categories.length !== 0 && (
         <div className="my-10 grid  gap-8 md:gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 *:p-5 *:ring-[0.3px] *:ring-[#bf8b14] *:rounded-lg *:shadow-sm">
           {categories.map((category: categoriesFormData) => (
             <div

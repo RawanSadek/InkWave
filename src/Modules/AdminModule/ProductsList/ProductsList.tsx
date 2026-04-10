@@ -20,7 +20,7 @@ import { CiSearch } from "react-icons/ci";
 import { TbFilterDollar } from "react-icons/tb";
 
 export default function ProductsList() {
-  const [productsLoading, setProductsLoading] = useState(false);
+  const [productsLoading, setProductsLoading] = useState(true);
   const [categoriesLoading, setCategoriesLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -216,7 +216,13 @@ export default function ProductsList() {
           </div>
         )}
 
-        {!productsLoading && (
+        {!productsLoading && products.length === 0 && (
+          <div className="flex flex-col justify-center items-center mt-20 gap-5">
+            <p className="secondary-text text-lg">No products found!</p>
+          </div>
+        )}
+
+        {!productsLoading && products.length !== 0 && (
           <div className="my-10 grid  gap-8 md:gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 *:p-5 *:ring-[0.3px] *:ring-[#bf8b14] *:rounded-lg *:shadow-sm">
             {products.map((product: productsFormData) => (
               <div
